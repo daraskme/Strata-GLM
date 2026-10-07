@@ -15,6 +15,8 @@ GLM-5.3-Flashを単一RTX PRO 6000 Blackwell 96GB・RAM 128GBで動かすprivate
 - GLMの`<arg_key>`/`<arg_value>`ツール構文をAPIのJSON tool_callsへ変換。
   GLMのツール引数は閉じタグ到着時に一括送信。通常テキストはstreaming。
 - A1のhealth、GPU/RAM下限、所有プロセスの終了処理、任意のMang-AI共通GPUキュー。
+- Nixで有効にならなかったCPU命令セットを明示し、RAM側expertをAVX2/AVX-VNNIで計算。
+  prefillは4 GiBの作業領域、最大8,192 tokens/chunk。256 tokens未満は短文用経路を使う。
 
 ## ビルド
 
@@ -59,7 +61,7 @@ packはGGUFと同じディレクトリ直下に置く。`--experts-bin`は指定
 `--run`なしは検査だけ。APIは`http://127.0.0.1:1243/v1`。
 起動には空きRAM94 GiB・VRAM80 GiBとA1の正常応答が必要。VMは利用者自身が停止する。
 既定contextは131,072で、実入力の品質検証結果は下記と区別する。
-GPU全体の使用上限目標88 GiBからさらに2 GiBを予約、RAMは空き容量から20 GiBを残してexpertへ使用。
+GPU全体の使用上限目標90 GiBからさらに2 GiBを予約、RAMは空き容量から20 GiBを残してexpertへ使用。
 MTPは単一GPUの実行経路がないため無効。CPU laneは起動時のCPU/PCIe校正に任せる。
 `--cpu-lane off`で比較可能。CPU 8 P-core/8 E-coreに固定の万能スレッド数は仮定しない。
 
@@ -75,6 +77,7 @@ build/glm_moe_quant_parity
 # 上のrun_glm.pyを --benchmark --run 付きで起動してから実行する
 .venv/bin/python tools/bench_glm.py --pack /absolute/model/pack-maya-iq4 --case smoke
 .venv/bin/python tools/bench_glm.py --pack /absolute/model/pack-maya-iq4 --case needle --tokens 32000
+.venv/bin/python tools/bench_glm.py --pack /absolute/model/pack-maya-iq4 --case needle --tokens 128000
 ```
 
 2026-10-08: CUDA13/GCC15/sm120でビルド成功。APIの4回帰テスト合格。
@@ -83,7 +86,33 @@ down計算のCPU double参照に対する相対L2誤差は1.4e-7以下。
 gate/up後のQ8活性化誤差を含む比較は0.00559～0.00624。
 未知形式の拒否・sticky errorも確認済み。
 
-実モデルの速度・長文検索結果は検証中。22.2 tokens/sという投稿値を、このQ4構成の実測値として扱わない。
+最終設定（UD-IQ4_XS、context 131,072、A1常駐）の短文試験はすべて合格。
+以下の生成速度はdecode区間であり、入力処理を含む所要時間とは異なる。
+
+| 試験 | 入力 / 出力tokens | 生成速度 | API全体の所要時間 | 判定 |
+| --- | ---: | ---: | ---: | --- |
+| 日本語の指定文 | 37 / 10 | 18.7 tokens/s | 3.22秒 | 一致 |
+| clamp関数 | 73 / 37 | 16.7 tokens/s | 6.65秒 | 8入力で一致 |
+| ツールJSON | 197 / 21 | 10.6 tokens/s | 17.71秒 | 名前・引数一致 |
+| 128K長文検索 | 127,990 / 42 | 17.5 tokens/s | 612.38秒 | 3箇所すべて一致 |
+
+短文の生ログは`build/validation/20261008T073400-smoke/`。
+CPU最適化前の生成速度5.3～6.7 tokens/sに比べ改善したが、短い試験だけの測定値である。
+長文検索は最適化前に31,989 / 63,999 tokensで3箇所とも成功。
+最終設定でも127,990 tokensの実入力で成功した。入力処理は609.63秒（209.9 tokens/s）、
+生成は2.40秒。生ログは`build/validation/20261008T073454-needle/`。
+すべてキャッシュ再利用0。短い回答の計測であり、長時間の生成速度を保証しない。
+最終起動の78回の監視でA1 health失敗0、空きRAMの最小31.97 GiB、空きVRAMの最小6.41 GiB。
+GLM終了後もA1のPIDは変わらず、GPUキューを解放した。
+22.2 tokens/sという投稿値を、このQ4構成の実測値として扱わない。
 `bench_glm.py`はモデルと同じchat template/tokenizerで実入力を数え、API usageとの一致を検査する。
 長文は10%・50%・90%位置の3つの合言葉を検索する限定テストであり、長文コーディング全般の保証ではない。
 APIの`tool_choice=required`など強制ツール選択は元実装の未対応項目。現在は通常のauto選択を使う。
+
+## このPCに残る転送制約
+
+推論中もGPUとCPU root portのPCIeリンクが2.5 GT/s x16（Gen1）だった。
+両端の最大対応はGen5。GPU使用率100%でもGen1で、入力処理の転送を制限している。
+CPU側expertの高速化でdecode中のRAM→GPU転送を抑えたが、リンク自体は改善していない。
+`--prefer-max-performance`は同一NVML接続でhintを設定・検証し、終了時に元へ戻す任意機能。
+今回の短い比較ではGen1のままだったため既定では無効。BIOS・ドライバー設定は変更していない。
