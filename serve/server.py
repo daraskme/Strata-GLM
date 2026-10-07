@@ -2061,13 +2061,12 @@ def main() -> int:
         ap.error(f"the model's tokenizer is missing ({tpath / 'vocab.json'}); run setup again")
     if (tpath / "vocab.json").exists():
         import strata_tokenizer as ST
-        vocab = json.loads((tpath / "vocab.json").read_text(encoding="utf-8"))
-        tokens = [None] * len(vocab)
-        for t, i in vocab.items():
-            tokens[i] = t
-        merges = (tpath / "merges.txt").read_text(encoding="utf-8").split("\n")
-        types = json.loads((tpath / "token_type.json").read_text())
-        tok = ST.Tokenizer(tokens, merges, types)
+        try:
+            tok = ST.Tokenizer.from_pack(tpath)
+        except (OSError, ValueError, TypeError) as exc:
+            ap.error(f"invalid model tokenizer: {exc}; rebuild the pack")
+        if a.engine == "strata" and not (tpath / "chat_template.jinja").is_file():
+            ap.error("the model's own chat template is missing; rebuild the pack")
     hub = hub_from_config(cfg, a.mcp_config)            # before the minutes of loading: a bad entry stops here
     if a.engine == "strata":
         if not cfg:

@@ -785,15 +785,22 @@ __device__ __forceinline__ void rows_dot(const uint8_t* const* rows, const block
 #pragma unroll
             for (int r = 0; r < NR; ++r) acc[r] += dwk<T>(rows[r], kbx, iqs, xk);
         }
+    } else if constexpr (T == 12 || T == 13 || T == 14) {
+        // K-quants span several Q8 blocks per dot; the IQ-only XV layout
+        // cannot represent them. Reuse the independently tested dense dot.
+        for (int k = lane; k < nb * Fm::ipb; k += 32) {
+            const int kbx = k / Fm::ipb, iqs = Fm::step * (k % Fm::ipb);
 #pragma unroll
-        for (int r = 0; r < NR; ++r) s[r] = warp_sum(acc[r]);
-        return;
-    }
-    for (int k = lane; k < nb * Fm::ipb; k += 32) {
-        const int kbx = k / Fm::ipb, ki = k % Fm::ipb, iqs = Fm::step * ki;
-        const XV xv = load_xv(x + kbx * (Fm::qk / 32) + ki);
+            for (int r = 0; r < NR; ++r)
+                acc[r] += Fm::dot(rows[r], x + kbx * (Fm::qk / 32), kbx, iqs);
+        }
+    } else {
+        for (int k = lane; k < nb * Fm::ipb; k += 32) {
+            const int kbx = k / Fm::ipb, ki = k % Fm::ipb, iqs = Fm::step * ki;
+            const XV xv = load_xv(x + kbx * (Fm::qk / 32) + ki);
 #pragma unroll
-        for (int r = 0; r < NR; ++r) acc[r] += dw<T>(rows[r], kbx, iqs, xv, tab);
+            for (int r = 0; r < NR; ++r) acc[r] += dw<T>(rows[r], kbx, iqs, xv, tab);
+        }
     }
 #pragma unroll
     for (int r = 0; r < NR; ++r) s[r] = warp_sum(acc[r]);
@@ -2887,6 +2894,21 @@ void moe_fetch(const MoeDev& d, int k, size_t blob_bytes, cudaStream_t s) {
     launch_check("moe_fetch");
 }
 
+// Keep startup validation and both expert dispatches in sync. UD quants may mix
+// IQ gate/up with Q6_K down weights even when the model is named IQ4_XS.
+#define GLMF_EXPERT_TYPES(X) \
+    X(10) X(11) X(12) X(13) X(14) X(16) X(17) X(18) X(19) X(21) X(22) X(23) X(29)
+
+bool moe_supported(int type) {
+    switch (type) {
+#define GLMF_SUPPORTED(T) case T:
+        GLMF_EXPERT_TYPES(GLMF_SUPPORTED)
+#undef GLMF_SUPPORTED
+            return true;
+        default: return false;
+    }
+}
+
 void moe_gate_up(int gu_type, const MoeDev& d, int k, int n_embd, int n_ff, float limit, const void* xq, void* hq,
                  const void* sh_down, int sh_type, const void* sh_hq, int n_ff_sh, float* sh_out, cudaStream_t s) {
     const bool sh = sh_down != nullptr && sh_out != nullptr;
@@ -2900,9 +2922,12 @@ void moe_gate_up(int gu_type, const MoeDev& d, int k, int n_embd, int n_ff, floa
 #define GLMF_GU(T) \
         case T: moe_gate_up_kernel<T><<<grid, GU_WARPS * 32, 0, s>>>(d, kk, n_embd, n_ff, limit, X, H, SD, sh_type, SH, \
                                                                      n_ff_sh, sh_out); break;
-        GLMF_GU(16) GLMF_GU(18) GLMF_GU(19) GLMF_GU(23) GLMF_GU(10) GLMF_GU(11) GLMF_GU(17) GLMF_GU(22) GLMF_GU(21) GLMF_GU(29)
+        GLMF_EXPERT_TYPES(GLMF_GU)
 #undef GLMF_GU
-        default: std::fprintf(stderr, "glm_fast moe_gate_up: type %d unsupported\n", gu_type); return;
+        default:
+            std::fprintf(stderr, "glm_fast moe_gate_up: type %d unsupported\n", gu_type);
+            g_launch_errors.fetch_add(1, std::memory_order_relaxed);
+            return;
     }
     launch_check("moe_gate_up");
 }
@@ -2941,12 +2966,17 @@ void moe_down(int d_type, const MoeDev& d, int k, int n_embd, int n_ff, size_t d
     switch (d_type) {
 #define GLMF_DN(T) \
         case T: moe_down_kernel<T><<<blocks, 256, 0, s>>>(d, k, n_embd, n_ff, down_off, H, sh_out, out); break;
-        GLMF_DN(16) GLMF_DN(18) GLMF_DN(19) GLMF_DN(23) GLMF_DN(10) GLMF_DN(11) GLMF_DN(17) GLMF_DN(22) GLMF_DN(21) GLMF_DN(29)
+        GLMF_EXPERT_TYPES(GLMF_DN)
 #undef GLMF_DN
-        default: std::fprintf(stderr, "glm_fast moe_down: type %d unsupported\n", d_type); return;
+        default:
+            std::fprintf(stderr, "glm_fast moe_down: type %d unsupported\n", d_type);
+            g_launch_errors.fetch_add(1, std::memory_order_relaxed);
+            return;
     }
     launch_check("moe_down");
 }
+
+#undef GLMF_EXPERT_TYPES
 
 namespace {
 __global__ void tab_update_kernel(unsigned long long* tab, const int* keys, const unsigned long long* vals, int n) {

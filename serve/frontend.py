@@ -16,6 +16,7 @@ and the formats change often; the engine boundary is token ids in, text deltas o
 from __future__ import annotations
 
 import json
+import re
 import uuid
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -255,11 +256,45 @@ CALL_START = "<tool_call>"
 CALL_END = "</tool_call>"
 
 
+def tool_call_name(body: str) -> str:
+    body = body.strip()
+    if body.startswith("<function=") and ">" in body:
+        return body[len("<function="):body.index(">")]
+    name = body.split("<arg_key>", 1)[0].strip()
+    if not re.fullmatch(r"[A-Za-z0-9_.:-]+", name):
+        raise ValueError("malformed GLM tool name: " + name[:80])
+    return name
+
+
+def parse_glm_tool_call(body: str, schema: dict | None) -> ToolCall:
+    name = tool_call_name(body)
+    rest = body.strip()[len(name):].strip()
+    props = ((schema or {}).get("parameters") or {}).get("properties") or {}
+    args = {}
+    while rest:
+        match = re.match(r"<arg_key>([^<]+)</arg_key>\s*<arg_value>(.*?)</arg_value>", rest, re.DOTALL)
+        if not match:
+            raise ValueError("malformed GLM tool arguments: " + rest[:80])
+        key, value = match.groups()
+        if key in args:
+            raise ValueError("duplicate GLM tool argument: " + key)
+        if (props.get(key) or {}).get("type") != "string":
+            try:
+                value = json.loads(value)
+            except ValueError:
+                pass
+        args[key] = value
+        rest = rest[match.end():].strip()
+    return ToolCall(name=name, arguments=args)
+
+
 def parse_tool_call(body: str, schema: dict | None = None) -> ToolCall:
     """`<function=NAME>\\n<parameter=P>\\nVALUE\\n</parameter>...</function>` -> ToolCall. Values are JSON-decoded
     when the tool's schema says the parameter is not a string (or, without a schema, when they parse as JSON
     objects/arrays/numbers/booleans)."""
     body = body.strip()
+    if not body.startswith("<function="):
+        return parse_glm_tool_call(body, schema)
     if not body.startswith("<function=") or ">" not in body:
         raise ValueError("malformed tool call: " + body[:80])
     name = body[len("<function="):body.index(">")]
@@ -314,6 +349,11 @@ class OutputParser:
 
     def _scan(self) -> list[Event]:
         """Advance the streaming view of the call body in self.buf (see stream_tools)."""
+        # GLM arguments are emitted atomically once </tool_call> arrives. This
+        # preserves typed JSON and keeps split tags/partial file writes private.
+        # Both streaming HTTP adapters already support complete tool_call events.
+        if not self.buf.lstrip().startswith("<"):
+            return []
         out = []
 
         def args(s):
@@ -475,7 +515,7 @@ class OutputParser:
                     return out
                 body = self.buf[:i]
                 self.buf = self.buf[i + len(CALL_END):]
-                name = body.strip()[len("<function="):].split(">", 1)[0]
+                name = tool_call_name(body)
                 call = parse_tool_call(body, self.schemas.get(name))
                 if self.scall is not None:
                     call.id = self.scall.id

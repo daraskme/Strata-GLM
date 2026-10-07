@@ -23,9 +23,11 @@
 
 #include "ggml.h"
 
-#include <cuda_profiler_api.h>
 #include <cuda_runtime.h>
+#ifdef STRATA_GLM_PROFILING
+#include <cuda_profiler_api.h>
 #include <nvtx3/nvToolsExt.h>
+#endif
 
 #include <algorithm>
 #include <array>
@@ -268,7 +270,8 @@ bool Glm5Model::fast_setup(std::string& err) {
                 Ly.dn_bytes = (size_t) nl.fmt.d_row * (size_t) g.n_embd;
                 Ly.down_off = 2 * Ly.gu_bytes;
                 Ly.blob = 2 * Ly.gu_bytes + Ly.dn_bytes;
-                if (gf::row_bytes(Ly.gu_type, g.n_embd) != nl.fmt.gu_row ||
+                if (!gf::moe_supported(Ly.gu_type) || !gf::moe_supported(Ly.d_type) ||
+                    gf::row_bytes(Ly.gu_type, g.n_embd) != nl.fmt.gu_row ||
                     gf::row_bytes(Ly.d_type, g.n_ff_exp) != nl.fmt.d_row)
                     missing += P + "expert types " + std::to_string(Ly.gu_type) + "/" + std::to_string(Ly.d_type) + " ";
             }
@@ -2854,22 +2857,35 @@ bool Glm5Model::decode_spec(strata::kernels::SamplerParams& sp, int64_t max_new,
     double tp[6] = {0, 0, 0, 0, 0, 0};
     int64_t np = 0;
     auto tnow = std::chrono::steady_clock::now();
+#ifdef STRATA_GLM_PROFILING
     static const char* const lap_names[6] = {"wait tail", "draft", "redo", "enqueue tail", "enqueue head", "emit"};
+#endif
     const auto lap = [&](int i) {
         if (!sprof) return;
         const auto t = std::chrono::steady_clock::now();
         tp[i] += std::chrono::duration<double, std::milli>(t - tnow).count();
         tnow = t;
+#ifdef STRATA_GLM_PROFILING
         nvtxRangePop();
         nvtxRangePushA(lap_names[(i + 1) % 6]);
+#endif
     };
     // STRATA_GLM_NSYS=<from>,<to>: a profiler capture window over those steps (nsys --capture-range=cudaProfilerApi)
+#ifdef STRATA_GLM_PROFILING
     int64_t nsys_from = -1, nsys_to = -1;
     if (const char* ns = getenv("STRATA_GLM_NSYS")) std::sscanf(ns, "%lld,%lld", (long long*) &nsys_from, (long long*) &nsys_to);
     if (sprof) nvtxRangePushA("emit");
+#else
+    if (getenv("STRATA_GLM_NSYS")) {
+        err = "NSYS capture requires a build with STRATA_GLM_PROFILING=ON";
+        return false;
+    }
+#endif
     for (;;) {
+#ifdef STRATA_GLM_PROFILING
         if (np == nsys_from) cudaProfilerStart();
         if (np == nsys_to) cudaProfilerStop();
+#endif
         // (1) the tail's token for position q+1 -> y (the truth for position q+2)
         int y2 = -1;
         lap(5);

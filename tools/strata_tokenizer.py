@@ -145,6 +145,23 @@ class Tokenizer:
 
     # -------------------------------------------------------------- constructors
     @classmethod
+    def from_pack(cls, path) -> "Tokenizer":
+        """Restore the model's pre-tokenizer; GLM must never default to Qwen BPE."""
+        path = pathlib.Path(path)
+        cfg = json.loads((path / "tokenizer.json").read_text(encoding="utf-8"))
+        if cfg.get("model") != "gpt2" or not cfg.get("pre"):
+            raise ValueError("pack tokenizer metadata must declare model=gpt2 and pre")
+        vocab = json.loads((path / "vocab.json").read_text(encoding="utf-8"))
+        if set(vocab.values()) != set(range(len(vocab))):
+            raise ValueError("pack vocabulary IDs must be unique and contiguous")
+        tokens = [None] * len(vocab)
+        for token, i in vocab.items():
+            tokens[i] = token
+        merges = (path / "merges.txt").read_text(encoding="utf-8").splitlines()
+        types = json.loads((path / "token_type.json").read_text(encoding="utf-8"))
+        return cls(tokens, merges, types, pre=cfg["pre"], special_ids=cfg.get("special_ids"))
+
+    @classmethod
     def from_gguf(cls, path) -> "Tokenizer":
         sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
         from gguf_reader import GGUFFile

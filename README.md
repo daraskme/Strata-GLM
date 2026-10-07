@@ -1,5 +1,9 @@
 <h1 align="center">Project Maya</h1>
 
+> **Mang-AI private fork:** GLM mixed-Q4 fixes, model-correct API tokenization,
+> GLM tool calls and a guarded 96 GB GPU / 128 GB RAM launcher.
+> See [日本語の導入・検証記録](README.MangAI.md). The upstream README follows below.
+
 <p align="center"><b>Run GLM-5.3-Flash - a 321-billion-parameter AI model - on your own NVIDIA GPU(s)</b><br>
 One or two NVIDIA GPUs · Linux, Windows (experimental) · chat in the browser, pictures, OpenAI- and
 Anthropic-compatible API</p>
