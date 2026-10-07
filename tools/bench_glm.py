@@ -68,7 +68,7 @@ def main():
         try:
             tree = ast.parse(source)
             allowed = (ast.Module, ast.FunctionDef, ast.arguments, ast.arg, ast.Return, ast.Call, ast.Name,
-                       ast.Load, ast.If, ast.Compare, ast.Lt, ast.Gt, ast.LtE, ast.GtE, ast.Constant)
+                       ast.Load, ast.If, ast.IfExp, ast.Compare, ast.Lt, ast.Gt, ast.LtE, ast.GtE, ast.Constant)
             if len(tree.body) != 1 or not isinstance(tree.body[0], ast.FunctionDef) or tree.body[0].name != "clamp":
                 raise ValueError("expected one clamp function")
             for node in ast.walk(tree):

@@ -710,7 +710,10 @@ if(STRATA_NATIVE_EXPERTS)
       set(${_f} ON CACHE BOOL "" FORCE)
     endforeach()
   else()
-    set(GGML_NATIVE ON CACHE BOOL "" FORCE)
+    # Honour an explicit OFF: Nix can strip -march=native while still building
+    # successfully, leaving ggml's expert dots scalar. Such hosts pass their
+    # verified ISA flags (AVX2/FMA/F16C/AVX-VNNI) explicitly instead.
+    set(GGML_NATIVE ON CACHE BOOL "Detect host CPU ISA when supported by the toolchain")
   endif()
   if(STRATA_GGML_DIR)
     add_subdirectory(${STRATA_GGML_DIR}/ggml ${CMAKE_BINARY_DIR}/ggml EXCLUDE_FROM_ALL)

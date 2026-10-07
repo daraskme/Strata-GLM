@@ -25,11 +25,13 @@ llama.cppの固定版は`3cf03257f219afbe7334045ff7c6a06ac68c627d`。
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements-mangai.txt
 .venv/bin/python -c 'import setup; setup.get_llama_cpp()'
-cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DSTRATA_ENABLE_CUDA=ON -DCMAKE_CUDA_ARCHITECTURES=120 -DSTRATA_NATIVE_EXPERTS=ON -DSTRATA_BUILD_TESTS=OFF -DSTRATA_GGML_DIR="$PWD/third_party/llama.cpp"
+cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DSTRATA_ENABLE_CUDA=ON -DCMAKE_CUDA_ARCHITECTURES=120 -DSTRATA_NATIVE_EXPERTS=ON -DSTRATA_BUILD_TESTS=OFF -DSTRATA_GGML_DIR="$PWD/third_party/llama.cpp" -DGGML_NATIVE=OFF -DGGML_AVX=ON -DGGML_AVX2=ON -DGGML_FMA=ON -DGGML_F16C=ON -DGGML_BMI2=ON -DGGML_AVX_VNNI=ON
 cmake --build build --target strata glm_moe_quant_parity --parallel 2
 ```
 
 このPCでは各コマンドを`nix develop /etc/nixos#cuda -c`経由で実行する。
+Nixの`NIX_ENFORCE_NO_NATIVE`は`-march=native`を除去するため、上記では確認済みのi9命令セットを明示する。
+他のCPUでは対応ISAを確認し、AVX-VNNI非対応なら同オプションをOFFにする。
 OS設定、A1用エンジン、既存Qwen用Strataは変更しない。
 プロファイラーヘッダーを導入済みの環境では`-DSTRATA_GLM_PROFILING=ON`が利用可能。
 
