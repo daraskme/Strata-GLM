@@ -1,0 +1,2088 @@
+{
+  "runs": {
+    "ahead2-ram95": {
+      "error": null,
+      "command": [
+        "${MANGAI_ROOT}/upstream/Strata-GLM/.venv/bin/python",
+        "${MANGAI_ROOT}/upstream/Strata-GLM/tools/run_glm.py",
+        "--pack",
+        "${MANGAI_ROOT}/models/llm/glm-5.3-flash-orcarouter/Q4_K_M/pack-maya-q4",
+        "--context",
+        "131072",
+        "--port",
+        "1244",
+        "--model-name",
+        "glm-orca-q4-profile-test",
+        "--mangai-root",
+        "${MANGAI_ROOT}",
+        "--cpu-spin-us",
+        "1000",
+        "--cpu-affinity",
+        "0-15",
+        "--expert-pool-gib",
+        "66.7",
+        "--ram-tier-gib",
+        "95.0",
+        "--usage-profile",
+        "${ENGINE_ROOT}/docs/benchmarks/2026-10-09/frozen-code-seed.txt",
+        "--benchmark",
+        "--trace-experts",
+        "--profile-gpu-after",
+        "0",
+        "--uniform-expert-slots",
+        "--run",
+        "--cpu-threads",
+        "8",
+        "--lookahead-layers",
+        "2"
+      ],
+      "seed_sha256": "4b61919f4a58cf412e8df1fb7b1ffbae0dfb923f6cc12853049c524e8c96d8e7",
+      "binary_sha256": "13a97bae0d030dd02e79877b05c44750e3635dc426c7d56e5600ebdb02b56373",
+      "ready_seconds": 70.34971312100015,
+      "requests": [
+        {
+          "name": "merge_intervals",
+          "elapsed_seconds": 36.16996065600006,
+          "usage": {
+            "prompt_tokens": 142,
+            "completion_tokens": 512,
+            "total_tokens": 654,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 142,
+            "prompt_ms": 8131.3,
+            "prompt_per_token_ms": 57.263,
+            "prompt_per_second": 17.5,
+            "predicted_n": 512,
+            "predicted_ms": 28035.1,
+            "predicted_per_token_ms": 54.756,
+            "predicted_per_second": 18.3,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "9b6674cd2eb8cf3f62ca47c4275ccfbf16ea6aa05693d036a467d1572a571fa5"
+        }
+      ],
+      "smoke": [],
+      "long_context": {},
+      "runtime_configuration": [
+        "glm prefill: CUDA0 chunks of 16384 tokens, borrowing 6184 MB of the expert pool while a prompt runs (activations 5885, weight scratch 96, expert staging 187); disk landing ring 64 experts (996 MB pinned)",
+        "glm fast: CUDA0 layers [0,45) expert pool 66.67 GB, 113-113 slots/layer (4746 total)",
+        "glm fast: CUDA0 slots per layer 3:113 4:113 5:113 6:113 7:113 8:113 9:113 10:113 11:113 12:113 13:113 14:113 15:113 16:113 17:113 18:113 19:113 20:113 21:113 22:113 23:113 24:113 25:113 26:113 27:113 28:113 29:113 30:113 31:113 32:113 33:113 34:113 35:113 36:113 37:113 38:113 39:113 40:113 41:113 42:113 43:113 44:113 ",
+        "glm fast: CUDA0 RAM tier 94.98 GB pinned, 6762 slots",
+        "glm fast: CUDA0 CPU lane: 8 threads, an expert 0.102 ms on the CPU vs 0.387 ms over PCIe -> of 0..8 RAM-tier experts the CPU takes 0 1 2 3 3 4 5 6 7"
+      ],
+      "decode_stats": [
+        "glm stat: decode 54.76 ms/tok (18.26 tok/s) | vram hit 75.16% | ram fetches 6.05/tok | disk 0.92 reads/tok in 1.50 waits/tok, 8.89 ms/tok | promotions 7.60/tok | cpu lane 75.69/tok in 34.95 ms/tok | prompt 57.3 ms/tok | vram 4629/4746 ram 6726/6762"
+      ],
+      "minimum_ram_gib": 14.02,
+      "minimum_vram_gib": 7.93,
+      "all_a1_ready": true,
+      "maximum_sampled_gpu_temperature_c": 50.0,
+      "maximum_sampled_gpu_power_w": 192.44,
+      "system_swap_page_delta": null,
+      "a1_idle_probe": null,
+      "a1_during_long_request": null
+    },
+    "ahead2-ram95-full": {
+      "error": null,
+      "command": [
+        "${MANGAI_ROOT}/upstream/Strata-GLM/.venv/bin/python",
+        "${MANGAI_ROOT}/upstream/Strata-GLM/tools/run_glm.py",
+        "--pack",
+        "${MANGAI_ROOT}/models/llm/glm-5.3-flash-orcarouter/Q4_K_M/pack-maya-q4",
+        "--context",
+        "131072",
+        "--port",
+        "1244",
+        "--model-name",
+        "glm-orca-q4-profile-test",
+        "--mangai-root",
+        "${MANGAI_ROOT}",
+        "--cpu-spin-us",
+        "1000",
+        "--cpu-affinity",
+        "0-15",
+        "--expert-pool-gib",
+        "66.7",
+        "--ram-tier-gib",
+        "95.0",
+        "--usage-profile",
+        "${ENGINE_ROOT}/docs/benchmarks/2026-10-09/frozen-code-seed.txt",
+        "--benchmark",
+        "--trace-experts",
+        "--profile-gpu-after",
+        "0",
+        "--uniform-expert-slots",
+        "--run",
+        "--cpu-threads",
+        "8",
+        "--lookahead-layers",
+        "2"
+      ],
+      "seed_sha256": "4b61919f4a58cf412e8df1fb7b1ffbae0dfb923f6cc12853049c524e8c96d8e7",
+      "binary_sha256": "13a97bae0d030dd02e79877b05c44750e3635dc426c7d56e5600ebdb02b56373",
+      "ready_seconds": 70.33489155300003,
+      "requests": [
+        {
+          "name": "merge_intervals",
+          "elapsed_seconds": 39.71531935599978,
+          "usage": {
+            "prompt_tokens": 142,
+            "completion_tokens": 512,
+            "total_tokens": 654,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 142,
+            "prompt_ms": 8904.5,
+            "prompt_per_token_ms": 62.708,
+            "prompt_per_second": 15.9,
+            "predicted_n": 512,
+            "predicted_ms": 30807.5,
+            "predicted_per_token_ms": 60.171,
+            "predicted_per_second": 16.6,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "23f95643c39e60c800e00a1f2ee6a798a1ccdcfea718d0c1c2163701900e5d33"
+        },
+        {
+          "name": "toposort_stable",
+          "elapsed_seconds": 30.81523594800001,
+          "usage": {
+            "prompt_tokens": 152,
+            "completion_tokens": 512,
+            "total_tokens": 664,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 152,
+            "prompt_ms": 9093.3,
+            "prompt_per_token_ms": 59.824,
+            "prompt_per_second": 16.7,
+            "predicted_n": 512,
+            "predicted_ms": 21718.1,
+            "predicted_per_token_ms": 42.418,
+            "predicted_per_second": 23.6,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "413c2d9e89a5df6294562f250d948d97d57086fe365c11cdcfe27d89d8728957"
+        },
+        {
+          "name": "parse_semver",
+          "elapsed_seconds": 35.798853236000014,
+          "usage": {
+            "prompt_tokens": 143,
+            "completion_tokens": 512,
+            "total_tokens": 655,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 143,
+            "prompt_ms": 7772.3,
+            "prompt_per_token_ms": 54.352,
+            "prompt_per_second": 18.4,
+            "predicted_n": 512,
+            "predicted_ms": 28022.9,
+            "predicted_per_token_ms": 54.732,
+            "predicted_per_second": 18.3,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "c776d330f958d1aad2a9fed27d86a3a9e13b5258b0e1ca41b6176d2e421aae6f"
+        }
+      ],
+      "smoke": [],
+      "long_context": {},
+      "runtime_configuration": [
+        "glm prefill: CUDA0 chunks of 16384 tokens, borrowing 6184 MB of the expert pool while a prompt runs (activations 5885, weight scratch 96, expert staging 187); disk landing ring 64 experts (996 MB pinned)",
+        "glm fast: CUDA0 layers [0,45) expert pool 66.67 GB, 113-113 slots/layer (4746 total)",
+        "glm fast: CUDA0 slots per layer 3:113 4:113 5:113 6:113 7:113 8:113 9:113 10:113 11:113 12:113 13:113 14:113 15:113 16:113 17:113 18:113 19:113 20:113 21:113 22:113 23:113 24:113 25:113 26:113 27:113 28:113 29:113 30:113 31:113 32:113 33:113 34:113 35:113 36:113 37:113 38:113 39:113 40:113 41:113 42:113 43:113 44:113 ",
+        "glm fast: CUDA0 RAM tier 94.98 GB pinned, 6762 slots",
+        "glm fast: CUDA0 CPU lane: 8 threads, an expert 0.150 ms on the CPU vs 0.432 ms over PCIe -> of 0..8 RAM-tier experts the CPU takes 0 1 2 2 3 4 5 5 6"
+      ],
+      "decode_stats": [
+        "glm stat: decode 60.17 ms/tok (16.62 tok/s) | vram hit 77.47% | ram fetches 11.21/tok | disk 1.04 reads/tok in 1.62 waits/tok, 9.02 ms/tok | promotions 12.83/tok | cpu lane 62.68/tok in 39.09 ms/tok | prompt 62.7 ms/tok | vram 4644/4746 ram 6692/6762",
+        "glm stat: decode 42.42 ms/tok (23.57 tok/s) | vram hit 79.91% | ram fetches 9.21/tok | disk 0.46 reads/tok in 0.63 waits/tok, 3.26 ms/tok | promotions 9.82/tok | cpu lane 57.53/tok in 27.73 ms/tok | prompt 59.8 ms/tok | vram 4642/4746 ram 6695/6762",
+        "glm stat: decode 54.73 ms/tok (18.27 tok/s) | vram hit 77.39% | ram fetches 11.29/tok | disk 0.67 reads/tok in 1.00 waits/tok, 5.35 ms/tok | promotions 12.28/tok | cpu lane 63.50/tok in 37.51 ms/tok | prompt 54.4 ms/tok | vram 4629/4746 ram 6721/6762"
+      ],
+      "minimum_ram_gib": 13.31,
+      "minimum_vram_gib": 8.15,
+      "all_a1_ready": true,
+      "maximum_sampled_gpu_temperature_c": 49.0,
+      "maximum_sampled_gpu_power_w": 205.47,
+      "system_swap_page_delta": null,
+      "a1_idle_probe": null,
+      "a1_during_long_request": null
+    },
+    "auto-ram95": {
+      "error": null,
+      "command": [
+        "${MANGAI_ROOT}/upstream/Strata-GLM/.venv/bin/python",
+        "${MANGAI_ROOT}/upstream/Strata-GLM/tools/run_glm.py",
+        "--pack",
+        "${MANGAI_ROOT}/models/llm/glm-5.3-flash-orcarouter/Q4_K_M/pack-maya-q4",
+        "--context",
+        "131072",
+        "--port",
+        "1244",
+        "--model-name",
+        "glm-orca-q4-profile-test",
+        "--mangai-root",
+        "${MANGAI_ROOT}",
+        "--cpu-spin-us",
+        "1000",
+        "--cpu-affinity",
+        "0-15",
+        "--expert-pool-gib",
+        "66.7",
+        "--ram-tier-gib",
+        "95.0",
+        "--usage-profile",
+        "${ENGINE_ROOT}/docs/benchmarks/2026-10-09/frozen-code-seed.txt",
+        "--benchmark",
+        "--trace-experts",
+        "--profile-gpu-after",
+        "0",
+        "--uniform-expert-slots",
+        "--run",
+        "--cpu-threads",
+        "8"
+      ],
+      "seed_sha256": "4b61919f4a58cf412e8df1fb7b1ffbae0dfb923f6cc12853049c524e8c96d8e7",
+      "binary_sha256": "13a97bae0d030dd02e79877b05c44750e3635dc426c7d56e5600ebdb02b56373",
+      "ready_seconds": 80.97108253800002,
+      "requests": [
+        {
+          "name": "merge_intervals",
+          "elapsed_seconds": 46.64790940800003,
+          "usage": {
+            "prompt_tokens": 142,
+            "completion_tokens": 512,
+            "total_tokens": 654,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 142,
+            "prompt_ms": 11049.2,
+            "prompt_per_token_ms": 77.811,
+            "prompt_per_second": 12.9,
+            "predicted_n": 512,
+            "predicted_ms": 35593.8,
+            "predicted_per_token_ms": 69.519,
+            "predicted_per_second": 14.4,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "796c85e4e821600a52f347ec4080454dd3b5bd7785df13a4707a99d398f8f0f1"
+        },
+        {
+          "name": "toposort_stable",
+          "elapsed_seconds": 38.57035294000002,
+          "usage": {
+            "prompt_tokens": 152,
+            "completion_tokens": 512,
+            "total_tokens": 664,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 152,
+            "prompt_ms": 10192.4,
+            "prompt_per_token_ms": 67.055,
+            "prompt_per_second": 14.9,
+            "predicted_n": 512,
+            "predicted_ms": 28373.0,
+            "predicted_per_token_ms": 55.416,
+            "predicted_per_second": 18.0,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "8b71fc82b295737e90d2f22974a2f5ad53c21c689ab2e774004cae916b32e15e"
+        },
+        {
+          "name": "parse_semver",
+          "elapsed_seconds": 41.750625063999905,
+          "usage": {
+            "prompt_tokens": 143,
+            "completion_tokens": 512,
+            "total_tokens": 655,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 143,
+            "prompt_ms": 9322.2,
+            "prompt_per_token_ms": 65.19,
+            "prompt_per_second": 15.3,
+            "predicted_n": 512,
+            "predicted_ms": 32424.8,
+            "predicted_per_token_ms": 63.33,
+            "predicted_per_second": 15.8,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "c2ac162c68fb283aa9c403356c75c8439f545cbfe309250c4844418653bacbfd"
+        }
+      ],
+      "smoke": [],
+      "long_context": {},
+      "runtime_configuration": [
+        "glm prefill: CUDA0 chunks of 16384 tokens, borrowing 6184 MB of the expert pool while a prompt runs (activations 5885, weight scratch 96, expert staging 187); disk landing ring 64 experts (996 MB pinned)",
+        "glm fast: CUDA0 layers [0,45) expert pool 66.67 GB, 113-113 slots/layer (4746 total)",
+        "glm fast: CUDA0 slots per layer 3:113 4:113 5:113 6:113 7:113 8:113 9:113 10:113 11:113 12:113 13:113 14:113 15:113 16:113 17:113 18:113 19:113 20:113 21:113 22:113 23:113 24:113 25:113 26:113 27:113 28:113 29:113 30:113 31:113 32:113 33:113 34:113 35:113 36:113 37:113 38:113 39:113 40:113 41:113 42:113 43:113 44:113 ",
+        "glm fast: CUDA0 RAM tier 94.98 GB pinned, 6762 slots",
+        "glm fast: CUDA0 CPU lane: 8 threads, an expert 0.117 ms on the CPU vs 0.511 ms over PCIe -> of 0..8 RAM-tier experts the CPU takes 0 1 2 3 4 4 5 6 7"
+      ],
+      "decode_stats": [
+        "glm stat: decode 69.52 ms/tok (14.38 tok/s) | vram hit 71.83% | ram fetches 3.10/tok | disk 1.46 reads/tok in 1.41 waits/tok, 7.03 ms/tok | promotions 4.55/tok | cpu lane 89.91/tok in 45.85 ms/tok | prompt 77.8 ms/tok | vram 4622/4746 ram 6747/6762",
+        "glm stat: decode 55.42 ms/tok (18.05 tok/s) | vram hit 75.63% | ram fetches 1.95/tok | disk 0.48 reads/tok in 0.47 waits/tok, 2.30 ms/tok | promotions 2.43/tok | cpu lane 79.31/tok in 37.08 ms/tok | prompt 67.1 ms/tok | vram 4622/4746 ram 6749/6762",
+        "glm stat: decode 63.33 ms/tok (15.79 tok/s) | vram hit 71.59% | ram fetches 2.82/tok | disk 0.79 reads/tok in 0.78 waits/tok, 3.71 ms/tok | promotions 3.61/tok | cpu lane 91.65/tok in 43.40 ms/tok | prompt 65.2 ms/tok | vram 4627/4746 ram 6745/6762"
+      ],
+      "minimum_ram_gib": 12.43,
+      "minimum_vram_gib": 7.72,
+      "all_a1_ready": true,
+      "maximum_sampled_gpu_temperature_c": 55.0,
+      "maximum_sampled_gpu_power_w": 227.58,
+      "system_swap_page_delta": null,
+      "a1_idle_probe": null,
+      "a1_during_long_request": null
+    },
+    "auto-repeat": {
+      "error": "Launcher exited 2; see ${LOCAL_EVIDENCE}/work/cpu-plan-sweep/auto-repeat",
+      "command": [
+        "${MANGAI_ROOT}/upstream/Strata-GLM/.venv/bin/python",
+        "${MANGAI_ROOT}/upstream/Strata-GLM/tools/run_glm.py",
+        "--pack",
+        "${MANGAI_ROOT}/models/llm/glm-5.3-flash-orcarouter/Q4_K_M/pack-maya-q4",
+        "--context",
+        "131072",
+        "--port",
+        "1244",
+        "--model-name",
+        "glm-orca-q4-profile-test",
+        "--mangai-root",
+        "${MANGAI_ROOT}",
+        "--cpu-spin-us",
+        "1000",
+        "--cpu-affinity",
+        "0-15",
+        "--expert-pool-gib",
+        "66.7",
+        "--ram-tier-gib",
+        "86",
+        "--usage-profile",
+        "${ENGINE_ROOT}/docs/benchmarks/2026-10-09/frozen-code-seed.txt",
+        "--benchmark",
+        "--trace-experts",
+        "--profile-gpu-after",
+        "0",
+        "--uniform-expert-slots",
+        "--run",
+        "--cpu-threads",
+        "8"
+      ],
+      "seed_sha256": "4b61919f4a58cf412e8df1fb7b1ffbae0dfb923f6cc12853049c524e8c96d8e7",
+      "binary_sha256": "13a97bae0d030dd02e79877b05c44750e3635dc426c7d56e5600ebdb02b56373",
+      "ready_seconds": null,
+      "requests": [],
+      "smoke": [],
+      "long_context": {},
+      "runtime_configuration": [],
+      "decode_stats": [],
+      "minimum_ram_gib": 24.94,
+      "minimum_vram_gib": 7.81,
+      "all_a1_ready": true,
+      "maximum_sampled_gpu_temperature_c": 53.0,
+      "maximum_sampled_gpu_power_w": 195.21,
+      "system_swap_page_delta": null,
+      "a1_idle_probe": null,
+      "a1_during_long_request": null
+    },
+    "auto-repeat2": {
+      "error": null,
+      "command": [
+        "${MANGAI_ROOT}/upstream/Strata-GLM/.venv/bin/python",
+        "${MANGAI_ROOT}/upstream/Strata-GLM/tools/run_glm.py",
+        "--pack",
+        "${MANGAI_ROOT}/models/llm/glm-5.3-flash-orcarouter/Q4_K_M/pack-maya-q4",
+        "--context",
+        "131072",
+        "--port",
+        "1244",
+        "--model-name",
+        "glm-orca-q4-profile-test",
+        "--mangai-root",
+        "${MANGAI_ROOT}",
+        "--cpu-spin-us",
+        "1000",
+        "--cpu-affinity",
+        "0-15",
+        "--expert-pool-gib",
+        "66.7",
+        "--ram-tier-gib",
+        "86",
+        "--usage-profile",
+        "${ENGINE_ROOT}/docs/benchmarks/2026-10-09/frozen-code-seed.txt",
+        "--benchmark",
+        "--trace-experts",
+        "--profile-gpu-after",
+        "0",
+        "--uniform-expert-slots",
+        "--run",
+        "--cpu-threads",
+        "8"
+      ],
+      "seed_sha256": "4b61919f4a58cf412e8df1fb7b1ffbae0dfb923f6cc12853049c524e8c96d8e7",
+      "binary_sha256": "13a97bae0d030dd02e79877b05c44750e3635dc426c7d56e5600ebdb02b56373",
+      "ready_seconds": 70.34322503700014,
+      "requests": [
+        {
+          "name": "merge_intervals",
+          "elapsed_seconds": 49.42833218100009,
+          "usage": {
+            "prompt_tokens": 142,
+            "completion_tokens": 512,
+            "total_tokens": 654,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 142,
+            "prompt_ms": 10891.4,
+            "prompt_per_token_ms": 76.7,
+            "prompt_per_second": 13.0,
+            "predicted_n": 512,
+            "predicted_ms": 38533.5,
+            "predicted_per_token_ms": 75.261,
+            "predicted_per_second": 13.3,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "9e4d7f32c67382b555f9e605041f952f4483b086a51bc4fd8675f307288c8cef"
+        },
+        {
+          "name": "toposort_stable",
+          "elapsed_seconds": 42.26049606999982,
+          "usage": {
+            "prompt_tokens": 152,
+            "completion_tokens": 512,
+            "total_tokens": 664,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 152,
+            "prompt_ms": 11379.5,
+            "prompt_per_token_ms": 74.865,
+            "prompt_per_second": 13.4,
+            "predicted_n": 512,
+            "predicted_ms": 30877.2,
+            "predicted_per_token_ms": 60.307,
+            "predicted_per_second": 16.6,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "175fe0675e415b9fa6d9cf6973b6f5fb2c41233b98235eb71706f120c4910abf"
+        },
+        {
+          "name": "parse_semver",
+          "elapsed_seconds": 46.15098634900005,
+          "usage": {
+            "prompt_tokens": 143,
+            "completion_tokens": 512,
+            "total_tokens": 655,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 143,
+            "prompt_ms": 10043.7,
+            "prompt_per_token_ms": 70.236,
+            "prompt_per_second": 14.2,
+            "predicted_n": 512,
+            "predicted_ms": 36103.8,
+            "predicted_per_token_ms": 70.515,
+            "predicted_per_second": 14.2,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "e041817fd9f1dcef4c046bee8dc061fb857c0c2f437a9053b89aeef2826c5abf"
+        }
+      ],
+      "smoke": [],
+      "long_context": {},
+      "runtime_configuration": [
+        "glm prefill: CUDA0 chunks of 16384 tokens, borrowing 6184 MB of the expert pool while a prompt runs (activations 5885, weight scratch 96, expert staging 187); disk landing ring 64 experts (996 MB pinned)",
+        "glm fast: CUDA0 layers [0,45) expert pool 66.67 GB, 113-113 slots/layer (4746 total)",
+        "glm fast: CUDA0 slots per layer 3:113 4:113 5:113 6:113 7:113 8:113 9:113 10:113 11:113 12:113 13:113 14:113 15:113 16:113 17:113 18:113 19:113 20:113 21:113 22:113 23:113 24:113 25:113 26:113 27:113 28:113 29:113 30:113 31:113 32:113 33:113 34:113 35:113 36:113 37:113 38:113 39:113 40:113 41:113 42:113 43:113 44:113 ",
+        "glm fast: CUDA0 RAM tier 85.98 GB pinned, 6121 slots",
+        "glm fast: CUDA0 CPU lane: 8 threads, an expert 0.103 ms on the CPU vs 0.496 ms over PCIe -> of 0..8 RAM-tier experts the CPU takes 0 1 2 3 4 4 5 6 7"
+      ],
+      "decode_stats": [
+        "glm stat: decode 75.26 ms/tok (13.29 tok/s) | vram hit 72.83% | ram fetches 2.70/tok | disk 2.90 reads/tok in 2.73 waits/tok, 13.66 ms/tok | promotions 5.59/tok | cpu lane 85.52/tok in 43.86 ms/tok | prompt 76.7 ms/tok | vram 4621/4746 ram 6107/6121",
+        "glm stat: decode 60.31 ms/tok (16.58 tok/s) | vram hit 75.21% | ram fetches 1.86/tok | disk 1.52 reads/tok in 1.48 waits/tok, 7.07 ms/tok | promotions 3.37/tok | cpu lane 79.74/tok in 36.64 ms/tok | prompt 74.9 ms/tok | vram 4621/4746 ram 6111/6121",
+        "glm stat: decode 70.52 ms/tok (14.18 tok/s) | vram hit 70.83% | ram fetches 2.91/tok | disk 2.45 reads/tok in 2.33 waits/tok, 11.18 ms/tok | promotions 5.35/tok | cpu lane 92.45/tok in 42.79 ms/tok | prompt 70.2 ms/tok | vram 4635/4746 ram 6097/6121"
+      ],
+      "minimum_ram_gib": 21.96,
+      "minimum_vram_gib": 7.5,
+      "all_a1_ready": true,
+      "maximum_sampled_gpu_temperature_c": 54.0,
+      "maximum_sampled_gpu_power_w": 223.77,
+      "system_swap_page_delta": null,
+      "a1_idle_probe": null,
+      "a1_during_long_request": null
+    },
+    "context262k-gen5-auto": {
+      "error": null,
+      "command": [
+        "${MANGAI_ROOT}/upstream/Strata-GLM/.venv/bin/python",
+        "${MANGAI_ROOT}/upstream/Strata-GLM/tools/run_glm.py",
+        "--pack",
+        "${MANGAI_ROOT}/models/llm/glm-5.3-flash-orcarouter/Q4_K_M/pack-maya-q4",
+        "--context",
+        "262144",
+        "--port",
+        "1244",
+        "--model-name",
+        "glm-orca-q4-profile-test",
+        "--mangai-root",
+        "${MANGAI_ROOT}",
+        "--cpu-spin-us",
+        "1000",
+        "--cpu-affinity",
+        "0-15",
+        "--expert-pool-gib",
+        "66.7",
+        "--ram-tier-gib",
+        "95.0",
+        "--usage-profile",
+        "${ENGINE_ROOT}/docs/benchmarks/2026-10-09/frozen-code-seed.txt",
+        "--benchmark",
+        "--uniform-expert-slots",
+        "--run",
+        "--cpu-threads",
+        "8"
+      ],
+      "seed_sha256": "4b61919f4a58cf412e8df1fb7b1ffbae0dfb923f6cc12853049c524e8c96d8e7",
+      "binary_sha256": "13a97bae0d030dd02e79877b05c44750e3635dc426c7d56e5600ebdb02b56373",
+      "ready_seconds": 70.32206241099993,
+      "requests": [],
+      "smoke": [],
+      "long_context": {
+        "long-260096": {
+          "prompt_tokens": 260090,
+          "usage": {
+            "prompt_tokens": 260090,
+            "completion_tokens": 512,
+            "total_tokens": 260602,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 260090,
+            "prompt_ms": 426492.9,
+            "prompt_per_token_ms": 1.64,
+            "prompt_per_second": 609.8,
+            "predicted_n": 512,
+            "predicted_ms": 30020.7,
+            "predicted_per_token_ms": 58.634,
+            "predicted_per_second": 17.1,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "elapsed_seconds": 457.00419937900006,
+          "answer": {
+            "早朝": "R7K2-5941",
+            "正午": "P3X8-2167",
+            "夕方": "W9C4-8032"
+          },
+          "expected": {
+            "早朝": "R7K2-5941",
+            "正午": "P3X8-2167",
+            "夕方": "W9C4-8032"
+          },
+          "retrieval_passed": true,
+          "tokenizer_matched": true,
+          "prefix_reused": 0,
+          "finish_reason": "length",
+          "note": "Checks lookup values and throughput only. Generated program not executed; truncated output is not a coding success. No FP8 quality comparison."
+        },
+        "long-8192": {
+          "prompt_tokens": 8180,
+          "usage": {
+            "prompt_tokens": 8180,
+            "completion_tokens": 512,
+            "total_tokens": 8692,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 8180,
+            "prompt_ms": 9768.9,
+            "prompt_per_token_ms": 1.194,
+            "prompt_per_second": 837.4,
+            "predicted_n": 512,
+            "predicted_ms": 32219.6,
+            "predicted_per_token_ms": 62.929,
+            "predicted_per_second": 15.9,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "elapsed_seconds": 42.00445285800015,
+          "answer": {
+            "早朝": "R7K2-5941",
+            "正午": "P3X8-2167",
+            "夕方": "W9C4-8032"
+          },
+          "expected": {
+            "早朝": "R7K2-5941",
+            "正午": "P3X8-2167",
+            "夕方": "W9C4-8032"
+          },
+          "retrieval_passed": true,
+          "tokenizer_matched": true,
+          "prefix_reused": 0,
+          "finish_reason": "length",
+          "note": "Checks lookup values and throughput only. Generated program not executed; truncated output is not a coding success. No FP8 quality comparison."
+        }
+      },
+      "runtime_configuration": [
+        "glm prefill: CUDA0 chunks of 16384 tokens, borrowing 6184 MB of the expert pool while a prompt runs (activations 5885, weight scratch 96, expert staging 187); disk landing ring 64 experts (996 MB pinned)",
+        "glm fast: CUDA0 layers [0,45) expert pool 63.13 GB, 107-107 slots/layer (4494 total)",
+        "glm fast: CUDA0 slots per layer 3:107 4:107 5:107 6:107 7:107 8:107 9:107 10:107 11:107 12:107 13:107 14:107 15:107 16:107 17:107 18:107 19:107 20:107 21:107 22:107 23:107 24:107 25:107 26:107 27:107 28:107 29:107 30:107 31:107 32:107 33:107 34:107 35:107 36:107 37:107 38:107 39:107 40:107 41:107 42:107 43:107 44:107 ",
+        "glm fast: CUDA0 RAM tier 94.98 GB pinned, 6762 slots",
+        "glm fast: CUDA0 CPU lane: 8 threads, an expert 0.103 ms on the CPU vs 0.375 ms over PCIe -> of 0..8 RAM-tier experts the CPU takes 0 1 2 3 3 4 5 6 6"
+      ],
+      "decode_stats": [
+        "glm stat: decode 62.93 ms/tok (15.89 tok/s) | vram hit 70.69% | ram fetches 7.93/tok | disk 3.03 reads/tok in 2.87 waits/tok, 13.86 ms/tok | promotions 10.89/tok | cpu lane 87.32/tok in 39.55 ms/tok | prompt 1.2 ms/tok | vram 4375/4494 ram 6742/6762",
+        "glm stat: decode 58.63 ms/tok (17.05 tok/s) | vram hit 73.99% | ram fetches 6.33/tok | disk 1.66 reads/tok in 1.62 waits/tok, 7.83 ms/tok | promotions 7.99/tok | cpu lane 79.22/tok in 39.26 ms/tok | prompt 1.6 ms/tok | vram 4378/4494 ram 6733/6762"
+      ],
+      "minimum_ram_gib": 12.62,
+      "minimum_vram_gib": 7.15,
+      "all_a1_ready": true,
+      "maximum_sampled_gpu_temperature_c": 89.0,
+      "maximum_sampled_gpu_power_w": 606.01,
+      "system_swap_page_delta": {
+        "pswpin": 2478,
+        "pswpout": 241541
+      },
+      "a1_idle_probe": {
+        "label": "before GLM launch",
+        "elapsed_seconds": 0.17457762100002583,
+        "answer": "4",
+        "usage": {
+          "completion_tokens": 2,
+          "prompt_tokens": 264,
+          "total_tokens": 266,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 264,
+          "prompt_ms": 150.726,
+          "prompt_per_token_ms": 0.5709318181818182,
+          "prompt_per_second": 1751.5226304685323,
+          "predicted_n": 2,
+          "predicted_ms": 8.332,
+          "predicted_per_token_ms": 8.332,
+          "predicted_per_second": 120.01920307249159
+        }
+      },
+      "a1_during_long_request": {
+        "label": "during long GLM request",
+        "elapsed_seconds": 0.09971737900013977,
+        "answer": "4",
+        "usage": {
+          "completion_tokens": 2,
+          "prompt_tokens": 264,
+          "total_tokens": 266,
+          "prompt_tokens_details": {
+            "cached_tokens": 260
+          }
+        },
+        "timings": {
+          "cache_n": 260,
+          "prompt_n": 4,
+          "prompt_ms": 61.734,
+          "prompt_per_token_ms": 15.4335,
+          "prompt_per_second": 64.79411669420416,
+          "predicted_n": 2,
+          "predicted_ms": 29.349,
+          "predicted_per_token_ms": 29.349,
+          "predicted_per_second": 34.072711165627446
+        }
+      }
+    },
+    "cpu-off": {
+      "error": null,
+      "command": [
+        "${MANGAI_ROOT}/upstream/Strata-GLM/.venv/bin/python",
+        "${MANGAI_ROOT}/upstream/Strata-GLM/tools/run_glm.py",
+        "--pack",
+        "${MANGAI_ROOT}/models/llm/glm-5.3-flash-orcarouter/Q4_K_M/pack-maya-q4",
+        "--context",
+        "131072",
+        "--port",
+        "1244",
+        "--model-name",
+        "glm-orca-q4-profile-test",
+        "--mangai-root",
+        "${MANGAI_ROOT}",
+        "--cpu-spin-us",
+        "1000",
+        "--cpu-affinity",
+        "0-15",
+        "--expert-pool-gib",
+        "66.7",
+        "--ram-tier-gib",
+        "86",
+        "--usage-profile",
+        "${ENGINE_ROOT}/docs/benchmarks/2026-10-09/frozen-code-seed.txt",
+        "--benchmark",
+        "--trace-experts",
+        "--profile-gpu-after",
+        "0",
+        "--uniform-expert-slots",
+        "--run",
+        "--cpu-lane",
+        "off"
+      ],
+      "seed_sha256": "4b61919f4a58cf412e8df1fb7b1ffbae0dfb923f6cc12853049c524e8c96d8e7",
+      "binary_sha256": "13a97bae0d030dd02e79877b05c44750e3635dc426c7d56e5600ebdb02b56373",
+      "ready_seconds": 70.34098905500002,
+      "requests": [
+        {
+          "name": "merge_intervals",
+          "elapsed_seconds": 61.45692086500003,
+          "usage": {
+            "prompt_tokens": 142,
+            "completion_tokens": 512,
+            "total_tokens": 654,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 142,
+            "prompt_ms": 13120.1,
+            "prompt_per_token_ms": 92.395,
+            "prompt_per_second": 10.8,
+            "predicted_n": 512,
+            "predicted_ms": 48334.0,
+            "predicted_per_token_ms": 94.402,
+            "predicted_per_second": 10.6,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "364a7df55eff9c7d572983d1fe3ecfb16698b75b5355521bd07f9dc0a1964dd1"
+        },
+        {
+          "name": "toposort_stable",
+          "elapsed_seconds": 55.693157425000095,
+          "usage": {
+            "prompt_tokens": 152,
+            "completion_tokens": 512,
+            "total_tokens": 664,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 152,
+            "prompt_ms": 16054.5,
+            "prompt_per_token_ms": 105.622,
+            "prompt_per_second": 9.5,
+            "predicted_n": 512,
+            "predicted_ms": 39635.5,
+            "predicted_per_token_ms": 77.413,
+            "predicted_per_second": 12.9,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "a8d41a50ddde853b10bba039b9c5e424b4acbcbaa5c392252c723af0a3585572"
+        },
+        {
+          "name": "parse_semver",
+          "elapsed_seconds": 65.79625925899995,
+          "usage": {
+            "prompt_tokens": 143,
+            "completion_tokens": 512,
+            "total_tokens": 655,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 143,
+            "prompt_ms": 15247.3,
+            "prompt_per_token_ms": 106.624,
+            "prompt_per_second": 9.4,
+            "predicted_n": 512,
+            "predicted_ms": 50545.7,
+            "predicted_per_token_ms": 98.722,
+            "predicted_per_second": 10.1,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "13232982a6aec62a8cf59d5ea661c9aa98f9693d2ffd8f587dd67ab56f57a4b3"
+        }
+      ],
+      "smoke": [],
+      "long_context": {},
+      "runtime_configuration": [
+        "glm prefill: CUDA0 chunks of 16384 tokens, borrowing 6184 MB of the expert pool while a prompt runs (activations 5885, weight scratch 96, expert staging 187); disk landing ring 64 experts (996 MB pinned)",
+        "glm fast: CUDA0 layers [0,45) expert pool 66.67 GB, 113-113 slots/layer (4746 total)",
+        "glm fast: CUDA0 slots per layer 3:113 4:113 5:113 6:113 7:113 8:113 9:113 10:113 11:113 12:113 13:113 14:113 15:113 16:113 17:113 18:113 19:113 20:113 21:113 22:113 23:113 24:113 25:113 26:113 27:113 28:113 29:113 30:113 31:113 32:113 33:113 34:113 35:113 36:113 37:113 38:113 39:113 40:113 41:113 42:113 43:113 44:113 ",
+        "glm fast: CUDA0 RAM tier 85.98 GB pinned, 6121 slots"
+      ],
+      "decode_stats": [
+        "glm stat: decode 94.40 ms/tok (10.59 tok/s) | vram hit 79.05% | ram fetches 65.07/tok | disk 5.20 reads/tok in 4.80 waits/tok, 23.92 ms/tok | promotions 43.85/tok | cpu lane 0.00/tok in 0.00 ms/tok | prompt 92.4 ms/tok | vram 4666/4746 ram 6022/6121",
+        "glm stat: decode 77.41 ms/tok (12.92 tok/s) | vram hit 82.94% | ram fetches 53.67/tok | disk 3.54 reads/tok in 3.37 waits/tok, 16.28 ms/tok | promotions 38.34/tok | cpu lane 0.00/tok in 0.00 ms/tok | prompt 105.6 ms/tok | vram 4680/4746 ram 6014/6121",
+        "glm stat: decode 98.72 ms/tok (10.13 tok/s) | vram hit 78.45% | ram fetches 67.48/tok | disk 4.80 reads/tok in 4.46 waits/tok, 22.08 ms/tok | promotions 45.28/tok | cpu lane 0.00/tok in 0.00 ms/tok | prompt 106.6 ms/tok | vram 4671/4746 ram 6017/6121"
+      ],
+      "minimum_ram_gib": 22.66,
+      "minimum_vram_gib": 7.51,
+      "all_a1_ready": true,
+      "maximum_sampled_gpu_temperature_c": 54.0,
+      "maximum_sampled_gpu_power_w": 218.36,
+      "system_swap_page_delta": null,
+      "a1_idle_probe": null,
+      "a1_during_long_request": null
+    },
+    "half": {
+      "error": null,
+      "command": [
+        "${MANGAI_ROOT}/upstream/Strata-GLM/.venv/bin/python",
+        "${MANGAI_ROOT}/upstream/Strata-GLM/tools/run_glm.py",
+        "--pack",
+        "${MANGAI_ROOT}/models/llm/glm-5.3-flash-orcarouter/Q4_K_M/pack-maya-q4",
+        "--context",
+        "131072",
+        "--port",
+        "1244",
+        "--model-name",
+        "glm-orca-q4-profile-test",
+        "--mangai-root",
+        "${MANGAI_ROOT}",
+        "--cpu-spin-us",
+        "1000",
+        "--cpu-affinity",
+        "0-15",
+        "--expert-pool-gib",
+        "66.7",
+        "--ram-tier-gib",
+        "86",
+        "--usage-profile",
+        "${ENGINE_ROOT}/docs/benchmarks/2026-10-09/frozen-code-seed.txt",
+        "--benchmark",
+        "--trace-experts",
+        "--profile-gpu-after",
+        "0",
+        "--uniform-expert-slots",
+        "--run",
+        "--cpu-threads",
+        "8",
+        "--cpu-plan",
+        "001122334"
+      ],
+      "seed_sha256": "4b61919f4a58cf412e8df1fb7b1ffbae0dfb923f6cc12853049c524e8c96d8e7",
+      "binary_sha256": "13a97bae0d030dd02e79877b05c44750e3635dc426c7d56e5600ebdb02b56373",
+      "ready_seconds": 70.34763885400002,
+      "requests": [
+        {
+          "name": "merge_intervals",
+          "elapsed_seconds": 60.29427447399985,
+          "usage": {
+            "prompt_tokens": 142,
+            "completion_tokens": 512,
+            "total_tokens": 654,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 142,
+            "prompt_ms": 12744.8,
+            "prompt_per_token_ms": 89.752,
+            "prompt_per_second": 11.1,
+            "predicted_n": 512,
+            "predicted_ms": 47545.9,
+            "predicted_per_token_ms": 92.863,
+            "predicted_per_second": 10.8,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "26fe7be7c72ee401b9256faeb8d71efafbfe12dd21b7dcab8fee66cd7cbe7035"
+        },
+        {
+          "name": "toposort_stable",
+          "elapsed_seconds": 60.28679321199979,
+          "usage": {
+            "prompt_tokens": 152,
+            "completion_tokens": 512,
+            "total_tokens": 664,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 152,
+            "prompt_ms": 16186.8,
+            "prompt_per_token_ms": 106.492,
+            "prompt_per_second": 9.4,
+            "predicted_n": 512,
+            "predicted_ms": 44096.6,
+            "predicted_per_token_ms": 86.126,
+            "predicted_per_second": 11.6,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "27046d566cf07c697ce77d3e41b86e00ac0fc33173c2ea8985ce30bbf3a380f8"
+        },
+        {
+          "name": "parse_semver",
+          "elapsed_seconds": 54.838221277,
+          "usage": {
+            "prompt_tokens": 143,
+            "completion_tokens": 512,
+            "total_tokens": 655,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 143,
+            "prompt_ms": 12969.8,
+            "prompt_per_token_ms": 90.698,
+            "prompt_per_second": 11.0,
+            "predicted_n": 512,
+            "predicted_ms": 41864.9,
+            "predicted_per_token_ms": 81.767,
+            "predicted_per_second": 12.2,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "adeeefca5174181de19621300c8528187fb6036e8b73fb4b508a98a51cae3344"
+        }
+      ],
+      "smoke": [],
+      "long_context": {},
+      "runtime_configuration": [
+        "glm prefill: CUDA0 chunks of 16384 tokens, borrowing 6184 MB of the expert pool while a prompt runs (activations 5885, weight scratch 96, expert staging 187); disk landing ring 64 experts (996 MB pinned)",
+        "glm fast: CUDA0 layers [0,45) expert pool 66.67 GB, 113-113 slots/layer (4746 total)",
+        "glm fast: CUDA0 slots per layer 3:113 4:113 5:113 6:113 7:113 8:113 9:113 10:113 11:113 12:113 13:113 14:113 15:113 16:113 17:113 18:113 19:113 20:113 21:113 22:113 23:113 24:113 25:113 26:113 27:113 28:113 29:113 30:113 31:113 32:113 33:113 34:113 35:113 36:113 37:113 38:113 39:113 40:113 41:113 42:113 43:113 44:113 ",
+        "glm fast: CUDA0 RAM tier 85.98 GB pinned, 6121 slots",
+        "glm fast: CUDA0 CPU lane: 8 threads, an expert 0.150 ms on the CPU vs 0.848 ms over PCIe -> of 0..8 RAM-tier experts the CPU takes 0 0 1 1 2 2 3 3 4"
+      ],
+      "decode_stats": [
+        "glm stat: decode 92.86 ms/tok (10.77 tok/s) | vram hit 79.42% | ram fetches 41.86/tok | disk 4.58 reads/tok in 4.27 waits/tok, 21.25 ms/tok | promotions 40.15/tok | cpu lane 22.59/tok in 17.36 ms/tok | prompt 89.8 ms/tok | vram 4655/4746 ram 6025/6121",
+        "glm stat: decode 86.13 ms/tok (11.61 tok/s) | vram hit 82.80% | ram fetches 36.31/tok | disk 3.02 reads/tok in 2.88 waits/tok, 14.94 ms/tok | promotions 34.60/tok | cpu lane 18.35/tok in 20.16 ms/tok | prompt 106.5 ms/tok | vram 4647/4746 ram 6060/6121",
+        "glm stat: decode 81.77 ms/tok (12.23 tok/s) | vram hit 79.77% | ram fetches 41.34/tok | disk 4.05 reads/tok in 3.82 waits/tok, 18.56 ms/tok | promotions 39.22/tok | cpu lane 22.45/tok in 15.33 ms/tok | prompt 90.7 ms/tok | vram 4663/4746 ram 6030/6121"
+      ],
+      "minimum_ram_gib": 20.99,
+      "minimum_vram_gib": 7.26,
+      "all_a1_ready": true,
+      "maximum_sampled_gpu_temperature_c": 54.0,
+      "maximum_sampled_gpu_power_w": 220.12,
+      "system_swap_page_delta": null,
+      "a1_idle_probe": null,
+      "a1_during_long_request": null
+    },
+    "heldout-ahead0-fixed": {
+      "error": null,
+      "command": [
+        "${MANGAI_ROOT}/upstream/Strata-GLM/.venv/bin/python",
+        "${MANGAI_ROOT}/upstream/Strata-GLM/tools/run_glm.py",
+        "--pack",
+        "${MANGAI_ROOT}/models/llm/glm-5.3-flash-orcarouter/Q4_K_M/pack-maya-q4",
+        "--context",
+        "131072",
+        "--port",
+        "1244",
+        "--model-name",
+        "glm-orca-q4-profile-test",
+        "--mangai-root",
+        "${MANGAI_ROOT}",
+        "--cpu-spin-us",
+        "1000",
+        "--cpu-affinity",
+        "0-15",
+        "--expert-pool-gib",
+        "66.7",
+        "--ram-tier-gib",
+        "95.0",
+        "--usage-profile",
+        "${ENGINE_ROOT}/docs/benchmarks/2026-10-09/frozen-code-seed.txt",
+        "--benchmark",
+        "--uniform-expert-slots",
+        "--run",
+        "--cpu-threads",
+        "8",
+        "--cpu-plan",
+        "012344567"
+      ],
+      "seed_sha256": "4b61919f4a58cf412e8df1fb7b1ffbae0dfb923f6cc12853049c524e8c96d8e7",
+      "binary_sha256": "13a97bae0d030dd02e79877b05c44750e3635dc426c7d56e5600ebdb02b56373",
+      "ready_seconds": 80.41967460500018,
+      "requests": [
+        {
+          "name": "merge_sorted_streams",
+          "elapsed_seconds": 30.303801451000254,
+          "usage": {
+            "prompt_tokens": 148,
+            "completion_tokens": 512,
+            "total_tokens": 660,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 148,
+            "prompt_ms": 7285.6,
+            "prompt_per_token_ms": 49.227,
+            "prompt_per_second": 20.3,
+            "predicted_n": 512,
+            "predicted_ms": 23014.5,
+            "predicted_per_token_ms": 44.95,
+            "predicted_per_second": 22.2,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "28f2ed3ffab07dfc9af39892f053dbbf6d7da2128b1378bdc066f40768b71e1c"
+        },
+        {
+          "name": "ttl_cache",
+          "elapsed_seconds": 31.086539002000336,
+          "usage": {
+            "prompt_tokens": 142,
+            "completion_tokens": 512,
+            "total_tokens": 654,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 142,
+            "prompt_ms": 6973.2,
+            "prompt_per_token_ms": 49.107,
+            "prompt_per_second": 20.4,
+            "predicted_n": 512,
+            "predicted_ms": 24109.6,
+            "predicted_per_token_ms": 47.089,
+            "predicted_per_second": 21.2,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "21ab8b9803037cab189ddc96b82f2f7cf3e84400f006af062947cb52eee2b43d"
+        },
+        {
+          "name": "dijkstra_path",
+          "elapsed_seconds": 34.730286280999735,
+          "usage": {
+            "prompt_tokens": 151,
+            "completion_tokens": 512,
+            "total_tokens": 663,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 151,
+            "prompt_ms": 7366.4,
+            "prompt_per_token_ms": 48.784,
+            "prompt_per_second": 20.5,
+            "predicted_n": 512,
+            "predicted_ms": 27360.6,
+            "predicted_per_token_ms": 53.439,
+            "predicted_per_second": 18.7,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "d1597284049cf42cc9c190cf48bfe993216fc32933e8473c0f30804ce1e1b80b"
+        }
+      ],
+      "smoke": [],
+      "long_context": {},
+      "runtime_configuration": [
+        "glm prefill: CUDA0 chunks of 16384 tokens, borrowing 6184 MB of the expert pool while a prompt runs (activations 5885, weight scratch 96, expert staging 187); disk landing ring 64 experts (996 MB pinned)",
+        "glm fast: CUDA0 layers [0,45) expert pool 66.67 GB, 113-113 slots/layer (4746 total)",
+        "glm fast: CUDA0 slots per layer 3:113 4:113 5:113 6:113 7:113 8:113 9:113 10:113 11:113 12:113 13:113 14:113 15:113 16:113 17:113 18:113 19:113 20:113 21:113 22:113 23:113 24:113 25:113 26:113 27:113 28:113 29:113 30:113 31:113 32:113 33:113 34:113 35:113 36:113 37:113 38:113 39:113 40:113 41:113 42:113 43:113 44:113 ",
+        "glm fast: CUDA0 RAM tier 94.98 GB pinned, 6762 slots",
+        "glm fast: CUDA0 CPU lane: 8 threads, an expert 0.098 ms on the CPU vs 0.378 ms over PCIe -> of 0..8 RAM-tier experts the CPU takes 0 1 2 3 4 4 5 6 7"
+      ],
+      "decode_stats": [
+        "glm stat: decode 44.95 ms/tok (22.25 tok/s) | vram hit 75.99% | ram fetches 1.87/tok | disk 1.03 reads/tok in 1.01 waits/tok, 4.88 ms/tok | promotions 2.90/tok | cpu lane 77.60/tok in 31.40 ms/tok | prompt 49.2 ms/tok | vram 4621/4746 ram 6749/6762",
+        "glm stat: decode 47.09 ms/tok (21.24 tok/s) | vram hit 73.44% | ram fetches 2.68/tok | disk 0.83 reads/tok in 0.80 waits/tok, 3.85 ms/tok | promotions 3.50/tok | cpu lane 85.57/tok in 34.68 ms/tok | prompt 49.1 ms/tok | vram 4622/4746 ram 6750/6762",
+        "glm stat: decode 53.44 ms/tok (18.71 tok/s) | vram hit 72.54% | ram fetches 2.76/tok | disk 0.61 reads/tok in 0.60 waits/tok, 2.89 ms/tok | promotions 3.37/tok | cpu lane 88.73/tok in 42.05 ms/tok | prompt 48.8 ms/tok | vram 4625/4746 ram 6742/6762"
+      ],
+      "minimum_ram_gib": 13.4,
+      "minimum_vram_gib": 8.07,
+      "all_a1_ready": true,
+      "maximum_sampled_gpu_temperature_c": 50.0,
+      "maximum_sampled_gpu_power_w": 205.68,
+      "system_swap_page_delta": {
+        "pswpin": 762,
+        "pswpout": 0
+      },
+      "a1_idle_probe": null,
+      "a1_during_long_request": null
+    },
+    "heldout-ahead2-fixed": {
+      "error": null,
+      "command": [
+        "${MANGAI_ROOT}/upstream/Strata-GLM/.venv/bin/python",
+        "${MANGAI_ROOT}/upstream/Strata-GLM/tools/run_glm.py",
+        "--pack",
+        "${MANGAI_ROOT}/models/llm/glm-5.3-flash-orcarouter/Q4_K_M/pack-maya-q4",
+        "--context",
+        "131072",
+        "--port",
+        "1244",
+        "--model-name",
+        "glm-orca-q4-profile-test",
+        "--mangai-root",
+        "${MANGAI_ROOT}",
+        "--cpu-spin-us",
+        "1000",
+        "--cpu-affinity",
+        "0-15",
+        "--expert-pool-gib",
+        "66.7",
+        "--ram-tier-gib",
+        "95.0",
+        "--usage-profile",
+        "${ENGINE_ROOT}/docs/benchmarks/2026-10-09/frozen-code-seed.txt",
+        "--benchmark",
+        "--uniform-expert-slots",
+        "--run",
+        "--cpu-threads",
+        "8",
+        "--cpu-plan",
+        "012344567",
+        "--lookahead-layers",
+        "2"
+      ],
+      "seed_sha256": "4b61919f4a58cf412e8df1fb7b1ffbae0dfb923f6cc12853049c524e8c96d8e7",
+      "binary_sha256": "13a97bae0d030dd02e79877b05c44750e3635dc426c7d56e5600ebdb02b56373",
+      "ready_seconds": 70.32412515700025,
+      "requests": [
+        {
+          "name": "merge_sorted_streams",
+          "elapsed_seconds": 32.49040955299961,
+          "usage": {
+            "prompt_tokens": 148,
+            "completion_tokens": 512,
+            "total_tokens": 660,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 148,
+            "prompt_ms": 7848.2,
+            "prompt_per_token_ms": 53.028,
+            "prompt_per_second": 18.9,
+            "predicted_n": 512,
+            "predicted_ms": 24638.7,
+            "predicted_per_token_ms": 48.122,
+            "predicted_per_second": 20.8,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "e084b994000bfd87a55485e6c10eaab0d0161181de57ec923af7732e5d77d769"
+        },
+        {
+          "name": "ttl_cache",
+          "elapsed_seconds": 33.74127040500025,
+          "usage": {
+            "prompt_tokens": 142,
+            "completion_tokens": 512,
+            "total_tokens": 654,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 142,
+            "prompt_ms": 7139.5,
+            "prompt_per_token_ms": 50.278,
+            "prompt_per_second": 19.9,
+            "predicted_n": 512,
+            "predicted_ms": 26597.8,
+            "predicted_per_token_ms": 51.949,
+            "predicted_per_second": 19.2,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "c0fa9a6fb393ba8dfd79a183526d760a8e804ab7ca4e01db5f37ac12683e8bb7"
+        },
+        {
+          "name": "dijkstra_path",
+          "elapsed_seconds": 32.376124695999806,
+          "usage": {
+            "prompt_tokens": 151,
+            "completion_tokens": 512,
+            "total_tokens": 663,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 151,
+            "prompt_ms": 7800.3,
+            "prompt_per_token_ms": 51.658,
+            "prompt_per_second": 19.4,
+            "predicted_n": 512,
+            "predicted_ms": 24571.7,
+            "predicted_per_token_ms": 47.992,
+            "predicted_per_second": 20.8,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "0a1533e1802a658c35f36eff36eec92d22a393df6068bf03531ba22d81b036c4"
+        }
+      ],
+      "smoke": [
+        [
+          {
+            "case": "japanese",
+            "model": "glm-orca-q4-profile-test",
+            "prompt_tokens": 37,
+            "usage": {
+              "prompt_tokens": 37,
+              "completion_tokens": 10,
+              "total_tokens": 47,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              }
+            },
+            "timings": {
+              "cache_n": 0,
+              "prompt_n": 37,
+              "prompt_ms": 2750.0,
+              "prompt_per_token_ms": 74.324,
+              "prompt_per_second": 13.5,
+              "predicted_n": 10,
+              "predicted_ms": 593.0,
+              "predicted_per_token_ms": 59.3,
+              "predicted_per_second": 16.9,
+              "draft_n": 0,
+              "draft_n_accepted": 0
+            },
+            "elapsed_s": 3.3446672589998343,
+            "finish_reason": "stop",
+            "passed": true
+          },
+          {
+            "case": "code",
+            "model": "glm-orca-q4-profile-test",
+            "prompt_tokens": 73,
+            "usage": {
+              "prompt_tokens": 73,
+              "completion_tokens": 29,
+              "total_tokens": 102,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              }
+            },
+            "timings": {
+              "cache_n": 0,
+              "prompt_n": 73,
+              "prompt_ms": 3835.8,
+              "prompt_per_token_ms": 52.545,
+              "prompt_per_second": 19.0,
+              "predicted_n": 29,
+              "predicted_ms": 1525.4,
+              "predicted_per_token_ms": 52.6,
+              "predicted_per_second": 19.0,
+              "draft_n": 0,
+              "draft_n_accepted": 0
+            },
+            "elapsed_s": 5.3630454009999085,
+            "finish_reason": "stop",
+            "passed": true
+          },
+          {
+            "case": "tool",
+            "model": "glm-orca-q4-profile-test",
+            "prompt_tokens": 197,
+            "usage": {
+              "prompt_tokens": 197,
+              "completion_tokens": 21,
+              "total_tokens": 218,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              }
+            },
+            "timings": {
+              "cache_n": 0,
+              "prompt_n": 197,
+              "prompt_ms": 14313.8,
+              "prompt_per_token_ms": 72.659,
+              "prompt_per_second": 13.8,
+              "predicted_n": 21,
+              "predicted_ms": 1235.6,
+              "predicted_per_token_ms": 58.838,
+              "predicted_per_second": 17.0,
+              "draft_n": 0,
+              "draft_n_accepted": 0
+            },
+            "elapsed_s": 15.551463234000039,
+            "finish_reason": "tool_calls",
+            "passed": true
+          }
+        ]
+      ],
+      "long_context": {},
+      "runtime_configuration": [
+        "glm prefill: CUDA0 chunks of 16384 tokens, borrowing 6184 MB of the expert pool while a prompt runs (activations 5885, weight scratch 96, expert staging 187); disk landing ring 64 experts (996 MB pinned)",
+        "glm fast: CUDA0 layers [0,45) expert pool 66.67 GB, 113-113 slots/layer (4746 total)",
+        "glm fast: CUDA0 slots per layer 3:113 4:113 5:113 6:113 7:113 8:113 9:113 10:113 11:113 12:113 13:113 14:113 15:113 16:113 17:113 18:113 19:113 20:113 21:113 22:113 23:113 24:113 25:113 26:113 27:113 28:113 29:113 30:113 31:113 32:113 33:113 34:113 35:113 36:113 37:113 38:113 39:113 40:113 41:113 42:113 43:113 44:113 ",
+        "glm fast: CUDA0 RAM tier 94.98 GB pinned, 6762 slots",
+        "glm fast: CUDA0 CPU lane: 8 threads, an expert 0.104 ms on the CPU vs 0.376 ms over PCIe -> of 0..8 RAM-tier experts the CPU takes 0 1 2 3 4 4 5 6 7"
+      ],
+      "decode_stats": [
+        "glm stat: decode 48.12 ms/tok (20.78 tok/s) | vram hit 75.66% | ram fetches 1.90/tok | disk 0.58 reads/tok in 1.06 waits/tok, 5.54 ms/tok | promotions 3.00/tok | cpu lane 78.61/tok in 33.49 ms/tok | prompt 53.0 ms/tok | vram 4623/4746 ram 6735/6762",
+        "glm stat: decode 51.95 ms/tok (19.25 tok/s) | vram hit 72.26% | ram fetches 2.89/tok | disk 0.47 reads/tok in 0.83 waits/tok, 4.50 ms/tok | promotions 3.74/tok | cpu lane 89.27/tok in 38.51 ms/tok | prompt 50.3 ms/tok | vram 4621/4746 ram 6736/6762",
+        "glm stat: decode 47.99 ms/tok (20.84 tok/s) | vram hit 73.33% | ram fetches 2.63/tok | disk 0.34 reads/tok in 0.58 waits/tok, 2.89 ms/tok | promotions 3.21/tok | cpu lane 86.23/tok in 36.19 ms/tok | prompt 51.7 ms/tok | vram 4623/4746 ram 6733/6762",
+        "glm stat: decode 59.30 ms/tok (16.86 tok/s) | vram hit 64.35% | ram fetches 3.70/tok | disk 0.70 reads/tok in 1.40 waits/tok, 7.17 ms/tok | promotions 5.20/tok | cpu lane 102.60/tok in 44.37 ms/tok | prompt 74.3 ms/tok | vram 4623/4746 ram 6731/6762",
+        "glm stat: decode 52.60 ms/tok (19.01 tok/s) | vram hit 69.44% | ram fetches 2.97/tok | disk 0.34 reads/tok in 0.62 waits/tok, 3.35 ms/tok | promotions 3.59/tok | cpu lane 95.55/tok in 40.87 ms/tok | prompt 52.5 ms/tok | vram 4622/4746 ram 6732/6762",
+        "glm stat: decode 58.84 ms/tok (17.00 tok/s) | vram hit 68.10% | ram fetches 3.33/tok | disk 0.86 reads/tok in 1.33 waits/tok, 7.17 ms/tok | promotions 4.71/tok | cpu lane 97.38/tok in 43.17 ms/tok | prompt 72.7 ms/tok | vram 4624/4746 ram 6730/6762"
+      ],
+      "minimum_ram_gib": 14.75,
+      "minimum_vram_gib": 8.07,
+      "all_a1_ready": true,
+      "maximum_sampled_gpu_temperature_c": 51.0,
+      "maximum_sampled_gpu_power_w": 202.07,
+      "system_swap_page_delta": {
+        "pswpin": 281,
+        "pswpout": 0
+      },
+      "a1_idle_probe": null,
+      "a1_during_long_request": null
+    },
+    "heldout-balanced0": {
+      "error": null,
+      "command": [
+        "${MANGAI_ROOT}/upstream/Strata-GLM/.venv/bin/python",
+        "${MANGAI_ROOT}/upstream/Strata-GLM/tools/run_glm.py",
+        "--pack",
+        "${MANGAI_ROOT}/models/llm/glm-5.3-flash-orcarouter/Q4_K_M/pack-maya-q4",
+        "--context",
+        "131072",
+        "--port",
+        "1244",
+        "--model-name",
+        "glm-orca-q4-profile-test",
+        "--mangai-root",
+        "${MANGAI_ROOT}",
+        "--cpu-spin-us",
+        "1000",
+        "--cpu-affinity",
+        "0-15",
+        "--expert-pool-gib",
+        "66.7",
+        "--ram-tier-gib",
+        "95.0",
+        "--usage-profile",
+        "${ENGINE_ROOT}/docs/benchmarks/2026-10-09/frozen-code-seed.txt",
+        "--benchmark",
+        "--uniform-expert-slots",
+        "--run",
+        "--cpu-threads",
+        "8",
+        "--cpu-plan",
+        "012234556"
+      ],
+      "seed_sha256": "4b61919f4a58cf412e8df1fb7b1ffbae0dfb923f6cc12853049c524e8c96d8e7",
+      "binary_sha256": "13a97bae0d030dd02e79877b05c44750e3635dc426c7d56e5600ebdb02b56373",
+      "ready_seconds": 70.34438670600002,
+      "requests": [
+        {
+          "name": "merge_sorted_streams",
+          "elapsed_seconds": 29.920566102000066,
+          "usage": {
+            "prompt_tokens": 148,
+            "completion_tokens": 512,
+            "total_tokens": 660,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 148,
+            "prompt_ms": 7150.7,
+            "prompt_per_token_ms": 48.316,
+            "prompt_per_second": 20.7,
+            "predicted_n": 512,
+            "predicted_ms": 22766.3,
+            "predicted_per_token_ms": 44.465,
+            "predicted_per_second": 22.5,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "6aa2929a459d03d553bd02657b735d6595ab042755341698e3f4870348773ede"
+        },
+        {
+          "name": "ttl_cache",
+          "elapsed_seconds": 30.79764302300009,
+          "usage": {
+            "prompt_tokens": 142,
+            "completion_tokens": 512,
+            "total_tokens": 654,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 142,
+            "prompt_ms": 6796.1,
+            "prompt_per_token_ms": 47.86,
+            "prompt_per_second": 20.9,
+            "predicted_n": 512,
+            "predicted_ms": 23997.9,
+            "predicted_per_token_ms": 46.871,
+            "predicted_per_second": 21.3,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "a87483469b6f9a643d46d94378c9d9a2f14cca58fb684bb23a33da35fd612d8c"
+        },
+        {
+          "name": "dijkstra_path",
+          "elapsed_seconds": 30.793411816000116,
+          "usage": {
+            "prompt_tokens": 151,
+            "completion_tokens": 512,
+            "total_tokens": 663,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 151,
+            "prompt_ms": 7569.0,
+            "prompt_per_token_ms": 50.126,
+            "prompt_per_second": 19.9,
+            "predicted_n": 512,
+            "predicted_ms": 23221.2,
+            "predicted_per_token_ms": 45.354,
+            "predicted_per_second": 22.0,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "183cba93db3f2a60d1e938885f859099daa9a401af80303f80d30679c1a95035"
+        }
+      ],
+      "smoke": [
+        [
+          {
+            "case": "japanese",
+            "model": "glm-orca-q4-profile-test",
+            "prompt_tokens": 37,
+            "usage": {
+              "prompt_tokens": 37,
+              "completion_tokens": 10,
+              "total_tokens": 47,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              }
+            },
+            "timings": {
+              "cache_n": 0,
+              "prompt_n": 37,
+              "prompt_ms": 2680.4,
+              "prompt_per_token_ms": 72.443,
+              "prompt_per_second": 13.8,
+              "predicted_n": 10,
+              "predicted_ms": 499.6,
+              "predicted_per_token_ms": 49.96,
+              "predicted_per_second": 20.0,
+              "draft_n": 0,
+              "draft_n_accepted": 0
+            },
+            "elapsed_s": 3.1820560529999966,
+            "finish_reason": "stop",
+            "passed": true
+          },
+          {
+            "case": "code",
+            "model": "glm-orca-q4-profile-test",
+            "prompt_tokens": 73,
+            "usage": {
+              "prompt_tokens": 73,
+              "completion_tokens": 29,
+              "total_tokens": 102,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              }
+            },
+            "timings": {
+              "cache_n": 0,
+              "prompt_n": 73,
+              "prompt_ms": 3554.5,
+              "prompt_per_token_ms": 48.692,
+              "prompt_per_second": 20.5,
+              "predicted_n": 29,
+              "predicted_ms": 1462.8,
+              "predicted_per_token_ms": 50.441,
+              "predicted_per_second": 19.8,
+              "draft_n": 0,
+              "draft_n_accepted": 0
+            },
+            "elapsed_s": 5.019251508000252,
+            "finish_reason": "stop",
+            "passed": true
+          },
+          {
+            "case": "tool",
+            "model": "glm-orca-q4-profile-test",
+            "prompt_tokens": 197,
+            "usage": {
+              "prompt_tokens": 197,
+              "completion_tokens": 21,
+              "total_tokens": 218,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              }
+            },
+            "timings": {
+              "cache_n": 0,
+              "prompt_n": 197,
+              "prompt_ms": 12775.2,
+              "prompt_per_token_ms": 64.849,
+              "prompt_per_second": 15.4,
+              "predicted_n": 21,
+              "predicted_ms": 972.4,
+              "predicted_per_token_ms": 46.305,
+              "predicted_per_second": 21.6,
+              "draft_n": 0,
+              "draft_n_accepted": 0
+            },
+            "elapsed_s": 13.749976162000166,
+            "finish_reason": "tool_calls",
+            "passed": true
+          }
+        ]
+      ],
+      "long_context": {},
+      "runtime_configuration": [
+        "glm prefill: CUDA0 chunks of 16384 tokens, borrowing 6184 MB of the expert pool while a prompt runs (activations 5885, weight scratch 96, expert staging 187); disk landing ring 64 experts (996 MB pinned)",
+        "glm fast: CUDA0 layers [0,45) expert pool 66.67 GB, 113-113 slots/layer (4746 total)",
+        "glm fast: CUDA0 slots per layer 3:113 4:113 5:113 6:113 7:113 8:113 9:113 10:113 11:113 12:113 13:113 14:113 15:113 16:113 17:113 18:113 19:113 20:113 21:113 22:113 23:113 24:113 25:113 26:113 27:113 28:113 29:113 30:113 31:113 32:113 33:113 34:113 35:113 36:113 37:113 38:113 39:113 40:113 41:113 42:113 43:113 44:113 ",
+        "glm fast: CUDA0 RAM tier 94.98 GB pinned, 6762 slots",
+        "glm fast: CUDA0 CPU lane: 8 threads, an expert 0.101 ms on the CPU vs 0.386 ms over PCIe -> of 0..8 RAM-tier experts the CPU takes 0 1 2 2 3 4 5 5 6"
+      ],
+      "decode_stats": [
+        "glm stat: decode 44.47 ms/tok (22.49 tok/s) | vram hit 79.97% | ram fetches 9.15/tok | disk 1.25 reads/tok in 1.21 waits/tok, 5.90 ms/tok | promotions 10.37/tok | cpu lane 56.76/tok in 29.02 ms/tok | prompt 48.3 ms/tok | vram 4629/4746 ram 6737/6762",
+        "glm stat: decode 46.87 ms/tok (21.34 tok/s) | vram hit 77.50% | ram fetches 11.30/tok | disk 1.02 reads/tok in 1.00 waits/tok, 4.78 ms/tok | promotions 12.30/tok | cpu lane 63.15/tok in 32.67 ms/tok | prompt 47.9 ms/tok | vram 4627/4746 ram 6737/6762",
+        "glm stat: decode 45.35 ms/tok (22.05 tok/s) | vram hit 77.61% | ram fetches 11.23/tok | disk 0.76 reads/tok in 0.75 waits/tok, 3.58 ms/tok | promotions 11.98/tok | cpu lane 63.11/tok in 32.42 ms/tok | prompt 50.1 ms/tok | vram 4634/4746 ram 6733/6762",
+        "glm stat: decode 49.96 ms/tok (20.01 tok/s) | vram hit 75.26% | ram fetches 11.70/tok | disk 2.20 reads/tok in 2.10 waits/tok, 10.16 ms/tok | promotions 13.80/tok | cpu lane 60.90/tok in 30.89 ms/tok | prompt 72.4 ms/tok | vram 4632/4746 ram 6730/6762",
+        "glm stat: decode 50.44 ms/tok (19.83 tok/s) | vram hit 72.22% | ram fetches 15.31/tok | disk 0.97 reads/tok in 0.97 waits/tok, 4.51 ms/tok | promotions 16.24/tok | cpu lane 73.86/tok in 36.91 ms/tok | prompt 48.7 ms/tok | vram 4633/4746 ram 6723/6762",
+        "glm stat: decode 46.30 ms/tok (21.60 tok/s) | vram hit 77.05% | ram fetches 11.24/tok | disk 1.52 reads/tok in 1.48 waits/tok, 6.99 ms/tok | promotions 12.76/tok | cpu lane 60.67/tok in 30.03 ms/tok | prompt 64.8 ms/tok | vram 4626/4746 ram 6740/6762"
+      ],
+      "minimum_ram_gib": 13.58,
+      "minimum_vram_gib": 7.95,
+      "all_a1_ready": true,
+      "maximum_sampled_gpu_temperature_c": 51.0,
+      "maximum_sampled_gpu_power_w": 215.61,
+      "system_swap_page_delta": {
+        "pswpin": 550,
+        "pswpout": 0
+      },
+      "a1_idle_probe": null,
+      "a1_during_long_request": null
+    },
+    "heldout-control-repeat": {
+      "error": null,
+      "command": [
+        "${MANGAI_ROOT}/upstream/Strata-GLM/.venv/bin/python",
+        "${MANGAI_ROOT}/upstream/Strata-GLM/tools/run_glm.py",
+        "--pack",
+        "${MANGAI_ROOT}/models/llm/glm-5.3-flash-orcarouter/Q4_K_M/pack-maya-q4",
+        "--context",
+        "131072",
+        "--port",
+        "1244",
+        "--model-name",
+        "glm-orca-q4-profile-test",
+        "--mangai-root",
+        "${MANGAI_ROOT}",
+        "--cpu-spin-us",
+        "1000",
+        "--cpu-affinity",
+        "0-15",
+        "--expert-pool-gib",
+        "66.7",
+        "--ram-tier-gib",
+        "95.0",
+        "--usage-profile",
+        "${ENGINE_ROOT}/docs/benchmarks/2026-10-09/frozen-code-seed.txt",
+        "--benchmark",
+        "--uniform-expert-slots",
+        "--run",
+        "--cpu-threads",
+        "8",
+        "--cpu-plan",
+        "012344567"
+      ],
+      "seed_sha256": "4b61919f4a58cf412e8df1fb7b1ffbae0dfb923f6cc12853049c524e8c96d8e7",
+      "binary_sha256": "13a97bae0d030dd02e79877b05c44750e3635dc426c7d56e5600ebdb02b56373",
+      "ready_seconds": 70.34741132999989,
+      "requests": [
+        {
+          "name": "merge_sorted_streams",
+          "elapsed_seconds": 30.514265109000007,
+          "usage": {
+            "prompt_tokens": 148,
+            "completion_tokens": 512,
+            "total_tokens": 660,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 148,
+            "prompt_ms": 7314.0,
+            "prompt_per_token_ms": 49.419,
+            "prompt_per_second": 20.2,
+            "predicted_n": 512,
+            "predicted_ms": 23196.4,
+            "predicted_per_token_ms": 45.305,
+            "predicted_per_second": 22.1,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "28f2ed3ffab07dfc9af39892f053dbbf6d7da2128b1378bdc066f40768b71e1c"
+        },
+        {
+          "name": "ttl_cache",
+          "elapsed_seconds": 31.398391166999772,
+          "usage": {
+            "prompt_tokens": 142,
+            "completion_tokens": 512,
+            "total_tokens": 654,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 142,
+            "prompt_ms": 6835.6,
+            "prompt_per_token_ms": 48.138,
+            "prompt_per_second": 20.8,
+            "predicted_n": 512,
+            "predicted_ms": 24559.0,
+            "predicted_per_token_ms": 47.967,
+            "predicted_per_second": 20.8,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "21ab8b9803037cab189ddc96b82f2f7cf3e84400f006af062947cb52eee2b43d"
+        },
+        {
+          "name": "dijkstra_path",
+          "elapsed_seconds": 31.49070534700013,
+          "usage": {
+            "prompt_tokens": 151,
+            "completion_tokens": 512,
+            "total_tokens": 663,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 151,
+            "prompt_ms": 7362.7,
+            "prompt_per_token_ms": 48.76,
+            "prompt_per_second": 20.5,
+            "predicted_n": 512,
+            "predicted_ms": 24124.5,
+            "predicted_per_token_ms": 47.118,
+            "predicted_per_second": 21.2,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "d1597284049cf42cc9c190cf48bfe993216fc32933e8473c0f30804ce1e1b80b"
+        }
+      ],
+      "smoke": [],
+      "long_context": {},
+      "runtime_configuration": [
+        "glm prefill: CUDA0 chunks of 16384 tokens, borrowing 6184 MB of the expert pool while a prompt runs (activations 5885, weight scratch 96, expert staging 187); disk landing ring 64 experts (996 MB pinned)",
+        "glm fast: CUDA0 layers [0,45) expert pool 66.67 GB, 113-113 slots/layer (4746 total)",
+        "glm fast: CUDA0 slots per layer 3:113 4:113 5:113 6:113 7:113 8:113 9:113 10:113 11:113 12:113 13:113 14:113 15:113 16:113 17:113 18:113 19:113 20:113 21:113 22:113 23:113 24:113 25:113 26:113 27:113 28:113 29:113 30:113 31:113 32:113 33:113 34:113 35:113 36:113 37:113 38:113 39:113 40:113 41:113 42:113 43:113 44:113 ",
+        "glm fast: CUDA0 RAM tier 94.98 GB pinned, 6762 slots",
+        "glm fast: CUDA0 CPU lane: 8 threads, an expert 0.099 ms on the CPU vs 0.401 ms over PCIe -> of 0..8 RAM-tier experts the CPU takes 0 1 2 3 4 4 5 6 7"
+      ],
+      "decode_stats": [
+        "glm stat: decode 45.31 ms/tok (22.07 tok/s) | vram hit 75.99% | ram fetches 1.87/tok | disk 1.03 reads/tok in 1.01 waits/tok, 4.88 ms/tok | promotions 2.90/tok | cpu lane 77.60/tok in 31.78 ms/tok | prompt 49.4 ms/tok | vram 4621/4746 ram 6749/6762",
+        "glm stat: decode 47.97 ms/tok (20.85 tok/s) | vram hit 73.44% | ram fetches 2.68/tok | disk 0.83 reads/tok in 0.80 waits/tok, 3.85 ms/tok | promotions 3.50/tok | cpu lane 85.57/tok in 35.59 ms/tok | prompt 48.1 ms/tok | vram 4622/4746 ram 6750/6762",
+        "glm stat: decode 47.12 ms/tok (21.22 tok/s) | vram hit 72.54% | ram fetches 2.76/tok | disk 0.61 reads/tok in 0.60 waits/tok, 2.86 ms/tok | promotions 3.37/tok | cpu lane 88.73/tok in 35.85 ms/tok | prompt 48.8 ms/tok | vram 4625/4746 ram 6742/6762"
+      ],
+      "minimum_ram_gib": 14.65,
+      "minimum_vram_gib": 7.9,
+      "all_a1_ready": true,
+      "maximum_sampled_gpu_temperature_c": 50.0,
+      "maximum_sampled_gpu_power_w": 206.11,
+      "system_swap_page_delta": {
+        "pswpin": 257,
+        "pswpout": 0
+      },
+      "a1_idle_probe": null,
+      "a1_during_long_request": null
+    },
+    "prefetch1-ram95": {
+      "error": null,
+      "command": [
+        "${MANGAI_ROOT}/upstream/Strata-GLM/.venv/bin/python",
+        "${MANGAI_ROOT}/upstream/Strata-GLM/tools/run_glm.py",
+        "--pack",
+        "${MANGAI_ROOT}/models/llm/glm-5.3-flash-orcarouter/Q4_K_M/pack-maya-q4",
+        "--context",
+        "131072",
+        "--port",
+        "1244",
+        "--model-name",
+        "glm-orca-q4-profile-test",
+        "--mangai-root",
+        "${MANGAI_ROOT}",
+        "--cpu-spin-us",
+        "1000",
+        "--cpu-affinity",
+        "0-15",
+        "--expert-pool-gib",
+        "66.7",
+        "--ram-tier-gib",
+        "95.0",
+        "--usage-profile",
+        "${ENGINE_ROOT}/docs/benchmarks/2026-10-09/frozen-code-seed.txt",
+        "--benchmark",
+        "--trace-experts",
+        "--profile-gpu-after",
+        "0",
+        "--uniform-expert-slots",
+        "--run",
+        "--cpu-threads",
+        "8",
+        "--prefetch-experts",
+        "1"
+      ],
+      "seed_sha256": "4b61919f4a58cf412e8df1fb7b1ffbae0dfb923f6cc12853049c524e8c96d8e7",
+      "binary_sha256": "13a97bae0d030dd02e79877b05c44750e3635dc426c7d56e5600ebdb02b56373",
+      "ready_seconds": 70.33433534300002,
+      "requests": [
+        {
+          "name": "merge_intervals",
+          "elapsed_seconds": 51.49044184100012,
+          "usage": {
+            "prompt_tokens": 142,
+            "completion_tokens": 512,
+            "total_tokens": 654,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 142,
+            "prompt_ms": 10409.3,
+            "prompt_per_token_ms": 73.305,
+            "prompt_per_second": 13.6,
+            "predicted_n": 512,
+            "predicted_ms": 41078.0,
+            "predicted_per_token_ms": 80.23,
+            "predicted_per_second": 12.5,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "eed217953c6fbd4e3349b12a163a68aae5e51c0ab2fe0706e2d8bd43adc85e73"
+        }
+      ],
+      "smoke": [],
+      "long_context": {},
+      "runtime_configuration": [
+        "glm prefill: CUDA0 chunks of 16384 tokens, borrowing 6184 MB of the expert pool while a prompt runs (activations 5885, weight scratch 96, expert staging 187); disk landing ring 64 experts (996 MB pinned)",
+        "glm fast: CUDA0 layers [0,45) expert pool 66.67 GB, 113-113 slots/layer (4746 total)",
+        "glm fast: CUDA0 slots per layer 3:113 4:113 5:113 6:113 7:113 8:113 9:113 10:113 11:113 12:113 13:113 14:113 15:113 16:113 17:113 18:113 19:113 20:113 21:113 22:113 23:113 24:113 25:113 26:113 27:113 28:113 29:113 30:113 31:113 32:113 33:113 34:113 35:113 36:113 37:113 38:113 39:113 40:113 41:113 42:113 43:113 44:113 ",
+        "glm fast: CUDA0 RAM tier 94.98 GB pinned, 6762 slots",
+        "glm fast: CUDA0 CPU lane: 8 threads, an expert 0.099 ms on the CPU vs 0.450 ms over PCIe -> of 0..8 RAM-tier experts the CPU takes 0 1 2 3 4 4 5 6 7"
+      ],
+      "decode_stats": [
+        "glm stat: decode 80.23 ms/tok (12.46 tok/s) | vram hit 82.67% | ram fetches 1.09/tok | disk 2.67 reads/tok in 2.60 waits/tok, 15.58 ms/tok | promotions 3.67/tok | cpu lane 54.36/tok in 35.36 ms/tok | prompt 73.3 ms/tok | vram 4647/4746 ram 6693/6762"
+      ],
+      "minimum_ram_gib": 12.93,
+      "minimum_vram_gib": 7.8,
+      "all_a1_ready": true,
+      "maximum_sampled_gpu_temperature_c": 52.0,
+      "maximum_sampled_gpu_power_w": 222.73,
+      "system_swap_page_delta": null,
+      "a1_idle_probe": null,
+      "a1_during_long_request": null
+    },
+    "threads12-ram95": {
+      "error": null,
+      "command": [
+        "${MANGAI_ROOT}/upstream/Strata-GLM/.venv/bin/python",
+        "${MANGAI_ROOT}/upstream/Strata-GLM/tools/run_glm.py",
+        "--pack",
+        "${MANGAI_ROOT}/models/llm/glm-5.3-flash-orcarouter/Q4_K_M/pack-maya-q4",
+        "--context",
+        "131072",
+        "--port",
+        "1244",
+        "--model-name",
+        "glm-orca-q4-profile-test",
+        "--mangai-root",
+        "${MANGAI_ROOT}",
+        "--cpu-spin-us",
+        "1000",
+        "--cpu-affinity",
+        "0-15",
+        "--expert-pool-gib",
+        "66.7",
+        "--ram-tier-gib",
+        "95.0",
+        "--usage-profile",
+        "${ENGINE_ROOT}/docs/benchmarks/2026-10-09/frozen-code-seed.txt",
+        "--benchmark",
+        "--trace-experts",
+        "--profile-gpu-after",
+        "0",
+        "--uniform-expert-slots",
+        "--run",
+        "--cpu-threads",
+        "12"
+      ],
+      "seed_sha256": "4b61919f4a58cf412e8df1fb7b1ffbae0dfb923f6cc12853049c524e8c96d8e7",
+      "binary_sha256": "13a97bae0d030dd02e79877b05c44750e3635dc426c7d56e5600ebdb02b56373",
+      "ready_seconds": 70.56286531399974,
+      "requests": [
+        {
+          "name": "merge_intervals",
+          "elapsed_seconds": 46.19632196800012,
+          "usage": {
+            "prompt_tokens": 142,
+            "completion_tokens": 512,
+            "total_tokens": 654,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 142,
+            "prompt_ms": 10420.9,
+            "prompt_per_token_ms": 73.387,
+            "prompt_per_second": 13.6,
+            "predicted_n": 512,
+            "predicted_ms": 35771.7,
+            "predicted_per_token_ms": 69.867,
+            "predicted_per_second": 14.3,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "796c85e4e821600a52f347ec4080454dd3b5bd7785df13a4707a99d398f8f0f1"
+        }
+      ],
+      "smoke": [],
+      "long_context": {},
+      "runtime_configuration": [
+        "glm prefill: CUDA0 chunks of 16384 tokens, borrowing 6184 MB of the expert pool while a prompt runs (activations 5885, weight scratch 96, expert staging 187); disk landing ring 64 experts (996 MB pinned)",
+        "glm fast: CUDA0 layers [0,45) expert pool 66.67 GB, 113-113 slots/layer (4746 total)",
+        "glm fast: CUDA0 slots per layer 3:113 4:113 5:113 6:113 7:113 8:113 9:113 10:113 11:113 12:113 13:113 14:113 15:113 16:113 17:113 18:113 19:113 20:113 21:113 22:113 23:113 24:113 25:113 26:113 27:113 28:113 29:113 30:113 31:113 32:113 33:113 34:113 35:113 36:113 37:113 38:113 39:113 40:113 41:113 42:113 43:113 44:113 ",
+        "glm fast: CUDA0 RAM tier 94.98 GB pinned, 6762 slots",
+        "glm fast: CUDA0 CPU lane: 12 threads, an expert 0.113 ms on the CPU vs 0.506 ms over PCIe -> of 0..8 RAM-tier experts the CPU takes 0 1 2 3 4 4 5 6 7"
+      ],
+      "decode_stats": [
+        "glm stat: decode 69.87 ms/tok (14.31 tok/s) | vram hit 71.83% | ram fetches 3.10/tok | disk 1.46 reads/tok in 1.41 waits/tok, 6.94 ms/tok | promotions 4.55/tok | cpu lane 89.91/tok in 46.78 ms/tok | prompt 73.4 ms/tok | vram 4622/4746 ram 6747/6762"
+      ],
+      "minimum_ram_gib": 13.22,
+      "minimum_vram_gib": 7.81,
+      "all_a1_ready": true,
+      "maximum_sampled_gpu_temperature_c": 52.0,
+      "maximum_sampled_gpu_power_w": 213.08,
+      "system_swap_page_delta": null,
+      "a1_idle_probe": null,
+      "a1_during_long_request": null
+    },
+    "threads4-ram95": {
+      "error": null,
+      "command": [
+        "${MANGAI_ROOT}/upstream/Strata-GLM/.venv/bin/python",
+        "${MANGAI_ROOT}/upstream/Strata-GLM/tools/run_glm.py",
+        "--pack",
+        "${MANGAI_ROOT}/models/llm/glm-5.3-flash-orcarouter/Q4_K_M/pack-maya-q4",
+        "--context",
+        "131072",
+        "--port",
+        "1244",
+        "--model-name",
+        "glm-orca-q4-profile-test",
+        "--mangai-root",
+        "${MANGAI_ROOT}",
+        "--cpu-spin-us",
+        "1000",
+        "--cpu-affinity",
+        "0-15",
+        "--expert-pool-gib",
+        "66.7",
+        "--ram-tier-gib",
+        "95.0",
+        "--usage-profile",
+        "${ENGINE_ROOT}/docs/benchmarks/2026-10-09/frozen-code-seed.txt",
+        "--benchmark",
+        "--trace-experts",
+        "--profile-gpu-after",
+        "0",
+        "--uniform-expert-slots",
+        "--run",
+        "--cpu-threads",
+        "4"
+      ],
+      "seed_sha256": "4b61919f4a58cf412e8df1fb7b1ffbae0dfb923f6cc12853049c524e8c96d8e7",
+      "binary_sha256": "13a97bae0d030dd02e79877b05c44750e3635dc426c7d56e5600ebdb02b56373",
+      "ready_seconds": 70.54816238300009,
+      "requests": [
+        {
+          "name": "merge_intervals",
+          "elapsed_seconds": 45.45738060500025,
+          "usage": {
+            "prompt_tokens": 142,
+            "completion_tokens": 512,
+            "total_tokens": 654,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 142,
+            "prompt_ms": 9333.5,
+            "prompt_per_token_ms": 65.729,
+            "prompt_per_second": 15.2,
+            "predicted_n": 512,
+            "predicted_ms": 36120.6,
+            "predicted_per_token_ms": 70.548,
+            "predicted_per_second": 14.2,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "finish_reason": "length",
+          "content_sha256": "66700af961fdfca226730617ad391d81ce86519a3cfd97a07b03f7cfc3b27d4b"
+        }
+      ],
+      "smoke": [],
+      "long_context": {},
+      "runtime_configuration": [
+        "glm prefill: CUDA0 chunks of 16384 tokens, borrowing 6184 MB of the expert pool while a prompt runs (activations 5885, weight scratch 96, expert staging 187); disk landing ring 64 experts (996 MB pinned)",
+        "glm fast: CUDA0 layers [0,45) expert pool 66.67 GB, 113-113 slots/layer (4746 total)",
+        "glm fast: CUDA0 slots per layer 3:113 4:113 5:113 6:113 7:113 8:113 9:113 10:113 11:113 12:113 13:113 14:113 15:113 16:113 17:113 18:113 19:113 20:113 21:113 22:113 23:113 24:113 25:113 26:113 27:113 28:113 29:113 30:113 31:113 32:113 33:113 34:113 35:113 36:113 37:113 38:113 39:113 40:113 41:113 42:113 43:113 44:113 ",
+        "glm fast: CUDA0 RAM tier 94.98 GB pinned, 6762 slots",
+        "glm fast: CUDA0 CPU lane: 4 threads, an expert 0.152 ms on the CPU vs 0.484 ms over PCIe -> of 0..8 RAM-tier experts the CPU takes 0 1 2 2 3 4 5 6 6"
+      ],
+      "decode_stats": [
+        "glm stat: decode 70.55 ms/tok (14.17 tok/s) | vram hit 76.11% | ram fetches 12.08/tok | disk 1.73 reads/tok in 1.69 waits/tok, 8.24 ms/tok | promotions 13.80/tok | cpu lane 66.31/tok in 43.60 ms/tok | prompt 65.7 ms/tok | vram 4626/4746 ram 6730/6762"
+      ],
+      "minimum_ram_gib": 12.91,
+      "minimum_vram_gib": 7.82,
+      "all_a1_ready": true,
+      "maximum_sampled_gpu_temperature_c": 52.0,
+      "maximum_sampled_gpu_power_w": 210.78,
+      "system_swap_page_delta": null,
+      "a1_idle_probe": null,
+      "a1_during_long_request": null
+    }
+  },
+  "limitations": [
+    "Short code requests are 512-token throughput samples, not code correctness passes.",
+    "Experimental profiled and independent unprofiled groups must not be directly pooled.",
+    "Free generation can change routes; identical seed and weights do not force identical continuations.",
+    "System swap counters include other processes, not only the GLM process.",
+    "One run per configuration unless a repeated run is explicitly present; no statistical confidence interval.",
+    "RAM95 versus RAM86 is a controlled experiment; normal adaptive configuration may already allocate around95GiB."
+  ]
+}

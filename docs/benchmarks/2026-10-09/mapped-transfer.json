@@ -1,0 +1,326 @@
+{
+  "note": "Synthetic copy kernel with same uint4 loop, not an LLM speed result. Host CPU/DMA contention is not represented. Multiplier 0 is cudaMemcpyAsync.",
+  "all_bytes_verified": true,
+  "results": [
+    {
+      "bytes": 14155776,
+      "experts": 1,
+      "blocks_per_sm": 0,
+      "median_GB_s": 18.433901,
+      "min_GB_s": 17.115811,
+      "max_GB_s": 19.180084
+    },
+    {
+      "bytes": 14155776,
+      "experts": 1,
+      "blocks_per_sm": 1,
+      "median_GB_s": 13.598414,
+      "min_GB_s": 12.964883,
+      "max_GB_s": 14.410297
+    },
+    {
+      "bytes": 14155776,
+      "experts": 1,
+      "blocks_per_sm": 2,
+      "median_GB_s": 14.018995,
+      "min_GB_s": 12.5381,
+      "max_GB_s": 15.069212
+    },
+    {
+      "bytes": 14155776,
+      "experts": 1,
+      "blocks_per_sm": 4,
+      "median_GB_s": 14.620992,
+      "min_GB_s": 11.81675,
+      "max_GB_s": 19.903735
+    },
+    {
+      "bytes": 14155776,
+      "experts": 1,
+      "blocks_per_sm": 8,
+      "median_GB_s": 14.296685,
+      "min_GB_s": 13.474802,
+      "max_GB_s": 20.686385
+    },
+    {
+      "bytes": 14155776,
+      "experts": 2,
+      "blocks_per_sm": 0,
+      "median_GB_s": 31.040565,
+      "min_GB_s": 21.741912,
+      "max_GB_s": 32.055071
+    },
+    {
+      "bytes": 14155776,
+      "experts": 2,
+      "blocks_per_sm": 1,
+      "median_GB_s": 20.957919,
+      "min_GB_s": 19.207149,
+      "max_GB_s": 22.22878
+    },
+    {
+      "bytes": 14155776,
+      "experts": 2,
+      "blocks_per_sm": 2,
+      "median_GB_s": 20.39521,
+      "min_GB_s": 17.017131,
+      "max_GB_s": 21.034857
+    },
+    {
+      "bytes": 14155776,
+      "experts": 2,
+      "blocks_per_sm": 4,
+      "median_GB_s": 21.291235,
+      "min_GB_s": 17.151172,
+      "max_GB_s": 21.364848
+    },
+    {
+      "bytes": 14155776,
+      "experts": 2,
+      "blocks_per_sm": 8,
+      "median_GB_s": 20.134509,
+      "min_GB_s": 19.949626,
+      "max_GB_s": 21.385465
+    },
+    {
+      "bytes": 14155776,
+      "experts": 4,
+      "blocks_per_sm": 0,
+      "median_GB_s": 27.570877,
+      "min_GB_s": 27.058445,
+      "max_GB_s": 27.774777
+    },
+    {
+      "bytes": 14155776,
+      "experts": 4,
+      "blocks_per_sm": 1,
+      "median_GB_s": 20.380996,
+      "min_GB_s": 19.039755,
+      "max_GB_s": 21.096548
+    },
+    {
+      "bytes": 14155776,
+      "experts": 4,
+      "blocks_per_sm": 2,
+      "median_GB_s": 21.572462,
+      "min_GB_s": 19.220914,
+      "max_GB_s": 21.87502
+    },
+    {
+      "bytes": 14155776,
+      "experts": 4,
+      "blocks_per_sm": 4,
+      "median_GB_s": 19.96665,
+      "min_GB_s": 15.035823,
+      "max_GB_s": 21.811808
+    },
+    {
+      "bytes": 14155776,
+      "experts": 4,
+      "blocks_per_sm": 8,
+      "median_GB_s": 19.73261,
+      "min_GB_s": 17.057646,
+      "max_GB_s": 20.28494
+    },
+    {
+      "bytes": 14155776,
+      "experts": 8,
+      "blocks_per_sm": 0,
+      "median_GB_s": 26.31417,
+      "min_GB_s": 25.424352,
+      "max_GB_s": 28.172807
+    },
+    {
+      "bytes": 14155776,
+      "experts": 8,
+      "blocks_per_sm": 1,
+      "median_GB_s": 17.917424,
+      "min_GB_s": 17.326495,
+      "max_GB_s": 21.051638
+    },
+    {
+      "bytes": 14155776,
+      "experts": 8,
+      "blocks_per_sm": 2,
+      "median_GB_s": 18.93702,
+      "min_GB_s": 15.347121,
+      "max_GB_s": 20.635375
+    },
+    {
+      "bytes": 14155776,
+      "experts": 8,
+      "blocks_per_sm": 4,
+      "median_GB_s": 18.905608,
+      "min_GB_s": 18.02276,
+      "max_GB_s": 19.679831
+    },
+    {
+      "bytes": 14155776,
+      "experts": 8,
+      "blocks_per_sm": 8,
+      "median_GB_s": 18.088223,
+      "min_GB_s": 17.854943,
+      "max_GB_s": 18.550128
+    },
+    {
+      "bytes": 16318464,
+      "experts": 1,
+      "blocks_per_sm": 0,
+      "median_GB_s": 24.640987,
+      "min_GB_s": 21.741765,
+      "max_GB_s": 26.357651
+    },
+    {
+      "bytes": 16318464,
+      "experts": 1,
+      "blocks_per_sm": 1,
+      "median_GB_s": 17.173556,
+      "min_GB_s": 16.180888,
+      "max_GB_s": 20.684898
+    },
+    {
+      "bytes": 16318464,
+      "experts": 1,
+      "blocks_per_sm": 2,
+      "median_GB_s": 18.854935,
+      "min_GB_s": 18.16712,
+      "max_GB_s": 19.672044
+    },
+    {
+      "bytes": 16318464,
+      "experts": 1,
+      "blocks_per_sm": 4,
+      "median_GB_s": 17.628472,
+      "min_GB_s": 12.145256,
+      "max_GB_s": 21.634078
+    },
+    {
+      "bytes": 16318464,
+      "experts": 1,
+      "blocks_per_sm": 8,
+      "median_GB_s": 17.580975,
+      "min_GB_s": 17.292327,
+      "max_GB_s": 18.290911
+    },
+    {
+      "bytes": 16318464,
+      "experts": 2,
+      "blocks_per_sm": 0,
+      "median_GB_s": 25.718766,
+      "min_GB_s": 23.560065,
+      "max_GB_s": 28.238344
+    },
+    {
+      "bytes": 16318464,
+      "experts": 2,
+      "blocks_per_sm": 1,
+      "median_GB_s": 18.266932,
+      "min_GB_s": 17.847784,
+      "max_GB_s": 18.356416
+    },
+    {
+      "bytes": 16318464,
+      "experts": 2,
+      "blocks_per_sm": 2,
+      "median_GB_s": 17.853806,
+      "min_GB_s": 17.531436,
+      "max_GB_s": 18.855625
+    },
+    {
+      "bytes": 16318464,
+      "experts": 2,
+      "blocks_per_sm": 4,
+      "median_GB_s": 16.813299,
+      "min_GB_s": 16.477219,
+      "max_GB_s": 19.070845
+    },
+    {
+      "bytes": 16318464,
+      "experts": 2,
+      "blocks_per_sm": 8,
+      "median_GB_s": 17.662113,
+      "min_GB_s": 15.896135,
+      "max_GB_s": 18.143971
+    },
+    {
+      "bytes": 16318464,
+      "experts": 4,
+      "blocks_per_sm": 0,
+      "median_GB_s": 26.816272,
+      "min_GB_s": 22.505413,
+      "max_GB_s": 27.563466
+    },
+    {
+      "bytes": 16318464,
+      "experts": 4,
+      "blocks_per_sm": 1,
+      "median_GB_s": 19.846259,
+      "min_GB_s": 17.568475,
+      "max_GB_s": 20.196498
+    },
+    {
+      "bytes": 16318464,
+      "experts": 4,
+      "blocks_per_sm": 2,
+      "median_GB_s": 19.434796,
+      "min_GB_s": 17.415133,
+      "max_GB_s": 21.849112
+    },
+    {
+      "bytes": 16318464,
+      "experts": 4,
+      "blocks_per_sm": 4,
+      "median_GB_s": 19.668211,
+      "min_GB_s": 19.601112,
+      "max_GB_s": 21.400888
+    },
+    {
+      "bytes": 16318464,
+      "experts": 4,
+      "blocks_per_sm": 8,
+      "median_GB_s": 17.886322,
+      "min_GB_s": 17.848522,
+      "max_GB_s": 19.810163
+    },
+    {
+      "bytes": 16318464,
+      "experts": 8,
+      "blocks_per_sm": 0,
+      "median_GB_s": 28.610016,
+      "min_GB_s": 28.444251,
+      "max_GB_s": 32.196462
+    },
+    {
+      "bytes": 16318464,
+      "experts": 8,
+      "blocks_per_sm": 1,
+      "median_GB_s": 21.074697,
+      "min_GB_s": 19.532351,
+      "max_GB_s": 22.513782
+    },
+    {
+      "bytes": 16318464,
+      "experts": 8,
+      "blocks_per_sm": 2,
+      "median_GB_s": 20.081781,
+      "min_GB_s": 18.290193,
+      "max_GB_s": 21.224438
+    },
+    {
+      "bytes": 16318464,
+      "experts": 8,
+      "blocks_per_sm": 4,
+      "median_GB_s": 19.17988,
+      "min_GB_s": 18.723752,
+      "max_GB_s": 20.469583
+    },
+    {
+      "bytes": 16318464,
+      "experts": 8,
+      "blocks_per_sm": 8,
+      "median_GB_s": 20.557633,
+      "min_GB_s": 17.722074,
+      "max_GB_s": 21.523359
+    }
+  ]
+}

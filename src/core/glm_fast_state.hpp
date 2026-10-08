@@ -17,6 +17,7 @@
 #include <chrono>
 #include <condition_variable>
 #include <cstdint>
+#include <cstdio>
 #include <cstdlib>
 #include <functional>
 #include <map>
@@ -264,6 +265,14 @@ struct Glm5Model::FastState {
     bool prof_on = false;
     std::vector<cudaEvent_t> pev;
     std::vector<const char*> pname;
+    std::vector<int> player;
+    std::vector<int64_t> pposition;
+    int profile_layer = -1;
+    int64_t profile_position = -1;
+    struct ProfileFileCloser {
+        void operator()(FILE* file) const { std::fclose(file); }
+    };
+    std::unique_ptr<FILE, ProfileFileCloser> profile_csv;
     size_t pn = 0;
     std::map<std::string, double> pacc;
     uint64_t ptokens = 0;
@@ -273,9 +282,13 @@ struct Glm5Model::FastState {
             cudaEventCreate(&e);
             pev.push_back(e);
             pname.push_back(nm);
+            player.push_back(profile_layer);
+            pposition.push_back(profile_position);
         }
         cudaEventRecord(pev[pn], cs);
         pname[pn] = nm;
+        player[pn] = profile_layer;
+        pposition[pn] = profile_position;
         ++pn;
     }
     uint64_t pseen = 0, pskip = 0;   // STRATA_GLM_PROF=<n>: the first n tokens (the cold tiers) are not counted
@@ -286,7 +299,21 @@ struct Glm5Model::FastState {
         }
         for (size_t i = 1; i < pn; ++i) {
             float ms = 0.0f;
-            if (cudaEventElapsedTime(&ms, pev[i - 1], pev[i]) == cudaSuccess) pacc[pname[i]] += ms;
+            if (cudaEventElapsedTime(&ms, pev[i - 1], pev[i]) == cudaSuccess) {
+                pacc[pname[i]] += ms;
+                if (profile_csv)
+                    std::fprintf(profile_csv.get(), "%llu,%lld,%d,%s,%.9g\n",
+                                 (unsigned long long) pseen, (long long) pposition[i], player[i], pname[i], (double) ms);
+            } else if (profile_csv) {
+                // Preserve a visible failure: the analyzer rejects non-finite measurements.
+                std::fprintf(profile_csv.get(), "%llu,%lld,%d,%s,nan\n",
+                             (unsigned long long) pseen, (long long) pposition[i], player[i], pname[i]);
+            }
+        }
+        // Diagnostic only. Flushing each completed pass keeps records after a server SIGTERM.
+        if (profile_csv && (std::fflush(profile_csv.get()) != 0 || std::ferror(profile_csv.get()))) {
+            std::fprintf(stderr, "glm GPU profile: write failed; disabling CSV output\n");
+            profile_csv.reset();
         }
         if (pn > 0) ++ptokens;
         pn = 0;

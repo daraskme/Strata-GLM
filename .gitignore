@@ -47,3 +47,13 @@ build-vision.bat
 *.done
 /third_party/*.zip
 
+
+# Local credentials and downloaded model weights
+.env
+.env.*
+!.env.example
+secrets/
+*.safetensors
+*.gguf
+!data/glm5-synth.gguf
+*.before-glm-*

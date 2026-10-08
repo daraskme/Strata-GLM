@@ -21,6 +21,7 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--pack", type=Path, required=True)
     p.add_argument("--url", default="http://127.0.0.1:1243")
+    p.add_argument("--model", help="explicit served model ID, for the shared Mang-AI broker")
     p.add_argument("--case", choices=["smoke", "needle", "decode", "decode-heldout"], default="smoke")
     p.add_argument("--tokens", type=int, default=32000)
     p.add_argument("--repeat", type=int, default=3, help="number of sustained decode trials")
@@ -30,8 +31,10 @@ def main():
         p.error("repeat must be positive, output-tokens must be 1..8192")
     with urllib.request.urlopen(a.url.rstrip("/") + "/v1/models", timeout=30) as response:
         available = json.load(response)["data"]
+    if a.model:
+        available = [model for model in available if model["id"] == a.model]
     if len(available) != 1:
-        p.error("benchmark expects exactly one served model")
+        p.error("select exactly one available model with --model when using a broker")
     model_name = available[0]["id"]
     tok = Tokenizer.from_pack(a.pack / "tokenizer")
     tpl = ChatTemplate(a.pack / "tokenizer/chat_template.jinja")

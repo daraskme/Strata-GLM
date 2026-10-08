@@ -1,0 +1,98 @@
+{
+  "merge_intervals": {
+    "model": "glm-orca-q4-profile-test",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Python標準ライブラリだけでmerge_intervals(intervals)を実装してください。整数の閉区間の集合を開始値で整列し、重なりまたは端点が一致する区間を併合します。隣り合うだけで重ならない区間は別のままです。逆向きの端点はValueError、入力を変更せず、空入力は空配列を返します。型注釈、docstring、計算量の説明、正常系と境界条件のunittestを8件以上含め、完全なPythonコードを出してください。"
+      }
+    ],
+    "temperature": 0,
+    "max_tokens": 512,
+    "stream": false,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    },
+    "seed": 42
+  },
+  "parse_semver": {
+    "model": "glm-orca-q4-profile-test",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Python標準ライブラリだけでバージョン番号を解析するparse_version(text)を実装してください。形式はmajor.minor.patchと任意のハイフン区切りprerelease、任意のプラス区切りbuildです。数字の先頭ゼロや空の識別子、不正な文字を拒否します。dataclassへ格納し、buildを無視して正式版がprereleaseより大きい比較関数も書いてください。正常系と境界条件のunittestを8件以上含む完全なコードと、設計上の注意点を出してください。"
+      }
+    ],
+    "temperature": 0,
+    "max_tokens": 512,
+    "stream": false,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    },
+    "seed": 42
+  },
+  "toposort_stable": {
+    "model": "glm-orca-q4-profile-test",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Python標準ライブラリだけでstable_toposort(edges)を実装してください。edgesは文字列から隣接頂点の配列への辞書です。値だけに出現する頂点も含め、複数の候補から辞書順で最小の頂点を選択し、辺の重複を処理し、自己ループを含む閉路ならValueErrorを返します。入力を変更せず、heapqを使用してください。設計と計算量を説明し、関数および正常系と境界条件を扱うunittestを8件以上含む完全なコードを書いてください。"
+      }
+    ],
+    "temperature": 0,
+    "max_tokens": 512,
+    "stream": false,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    },
+    "seed": 42
+  },
+  "dijkstra_path": {
+    "model": "glm-orca-q4-profile-test",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Python標準ライブラリだけでshortest_path(graph, start, goal)を実装してください。graphは頂点名から(隣接頂点, 非負整数の重み)のリストへの辞書です。Dijkstra法とheapqを使い、到達不能ならNone、到達可能なら(距離, 経路)を返してください。負の重みを拒否し、同距離では決定的な順序にしてください。自己辺、重複辺、孤立点を含むunittestを8件以上付け、完全なPythonコードと日本語の設計説明を書いてください。"
+      }
+    ],
+    "temperature": 0,
+    "max_tokens": 512,
+    "stream": false,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    },
+    "seed": 42
+  },
+  "merge_sorted_streams": {
+    "model": "glm-orca-q4-profile-test",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Python標準ライブラリだけでmerge_sorted_streams(streams, key=None)ジェネレータを実装してください。整列済みの複数のイテレータから要素を遅延に取り出し、昇順に併合します。同じkeyなら入力stream番号順を安定に保ち、比較できない辞書などの要素にも対応してください。全入力を配列へ展開せずheapqを使ってください。空のstream、重複key、有限prefixだけ読む場合を含むunittestを8件以上付け、設計と計算量を日本語で説明してください。"
+      }
+    ],
+    "temperature": 0,
+    "max_tokens": 512,
+    "stream": false,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    },
+    "seed": 42
+  },
+  "ttl_cache": {
+    "model": "glm-orca-q4-profile-test",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Python標準ライブラリだけでTTLCacheを実装してください。容量上限、get、put、delete、len、expireを提供し、期限は注入したmonotonic関数で扱ってください。期限切れの値を返さず、更新時は期限を更新し、容量超過時は最も古く使われた生存項目を除いてください。テストに実時間のsleepを使わず、偽時計で境界条件を検証してください。完全なコード、unittestを8件以上、設計と計算量の日本語説明を出してください。"
+      }
+    ],
+    "temperature": 0,
+    "max_tokens": 512,
+    "stream": false,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    },
+    "seed": 42
+  }
+}

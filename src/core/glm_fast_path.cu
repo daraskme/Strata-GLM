@@ -165,6 +165,18 @@ bool Glm5Model::fast_setup(std::string& err) {
     F->timing = getenv("STRATA_GLM_TIMING") != nullptr;
     F->prof_on = getenv("STRATA_GLM_PROF") != nullptr;
     if (F->prof_on) F->pskip = (uint64_t) std::max(0, std::atoi(getenv("STRATA_GLM_PROF")));
+    if (F->prof_on) {
+        if (const char* path = getenv("STRATA_GLM_PROFILE_LOG")) {
+            const std::string file = std::string(path) + "." + std::to_string(dev_) + ".csv";
+            F->profile_csv.reset(std::fopen(file.c_str(), "wx"));
+            if (!F->profile_csv) {
+                err = "glm GPU profile: cannot create " + file;
+                return false;
+            }
+            std::fprintf(F->profile_csv.get(), "# glm_gpu_profile_v1\nsample,position,layer,phase,milliseconds\n");
+            std::fflush(F->profile_csv.get());
+        }
+    }
     if (const char* pn = getenv("STRATA_GLM_PREFETCH_N")) F->max_pf = std::max(0, std::min(gf::kSpares - 1, std::atoi(pn)));
     if (cudaStreamCreateWithFlags(&F->cs, cudaStreamNonBlocking) != cudaSuccess ||
         cudaStreamCreateWithFlags(&F->copy, cudaStreamNonBlocking) != cudaSuccess ||
@@ -2341,8 +2353,13 @@ bool Glm5Model::fast_layers(int64_t p, bool hop_in, std::string& err) {
     bool pf_pending = false;
     float* Rc = state_;
     float* Ro = state_ + (int64_t) g.hc * g.n_embd;
-    if (F->prof_on) F->mark("start");
+    if (F->prof_on) {
+        F->profile_layer = -1;
+        F->profile_position = p;
+        F->mark("start");
+    }
     for (int il = l0_; il < l1_; ++il) {
+        if (F->prof_on) F->profile_layer = il;
         const auto& Ly = F->L[(size_t) il];
         // ---- the attention-side read (fused with the previous FFN's write)
         gf::HcArgs h;
@@ -2572,6 +2589,10 @@ bool Glm5Model::fast_mtp(int64_t p, int32_t next_tok, std::string& err) {
     if (F == nullptr || il < 0) {
         err = "glm mtp: no draft block on this half";
         return false;
+    }
+    if (F->prof_on) {
+        F->profile_layer = il;
+        F->profile_position = p;
     }
     const auto& Ly = F->L[(size_t) il];
     const int E = g.n_embd;
