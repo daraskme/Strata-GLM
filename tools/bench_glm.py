@@ -21,9 +21,18 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--pack", type=Path, required=True)
     p.add_argument("--url", default="http://127.0.0.1:1243")
-    p.add_argument("--case", choices=["smoke", "needle"], default="smoke")
+    p.add_argument("--case", choices=["smoke", "needle", "decode", "decode-heldout"], default="smoke")
     p.add_argument("--tokens", type=int, default=32000)
+    p.add_argument("--repeat", type=int, default=3, help="number of sustained decode trials")
+    p.add_argument("--output-tokens", type=int, default=768)
     a = p.parse_args()
+    if a.repeat < 1 or not 1 <= a.output_tokens <= 8192:
+        p.error("repeat must be positive, output-tokens must be 1..8192")
+    with urllib.request.urlopen(a.url.rstrip("/") + "/v1/models", timeout=30) as response:
+        available = json.load(response)["data"]
+    if len(available) != 1:
+        p.error("benchmark expects exactly one served model")
+    model_name = available[0]["id"]
     tok = Tokenizer.from_pack(a.pack / "tokenizer")
     tpl = ChatTemplate(a.pack / "tokenizer/chat_template.jinja")
     out = ROOT / "build/validation" / (time.strftime("%Y%m%dT%H%M%S") + "-" + a.case)
@@ -35,7 +44,7 @@ def main():
         return len(tok.encode(prompt, parse_special=True))
 
     def ask(label, content, *, tools=None, max_tokens=256):
-        req = {"model": "glm-5.3-flash-iq4-mangai", "messages": [{"role": "user", "content": content}],
+        req = {"model": model_name, "messages": [{"role": "user", "content": content}],
                "temperature": 0, "max_tokens": max_tokens, "reasoning_effort": "none", "stream": False}
         if tools:
             req["tools"] = tools
@@ -52,7 +61,7 @@ def main():
         actual = result["usage"]["prompt_tokens"]
         if actual != n:
             raise RuntimeError(f"tokenizer mismatch: local {n} / API {actual}")
-        summary = {"case": label, "prompt_tokens": n, "usage": result["usage"], "timings": result.get("timings"),
+        summary = {"case": label, "model": model_name, "prompt_tokens": n, "usage": result["usage"], "timings": result.get("timings"),
                    "elapsed_s": elapsed, "finish_reason": result["choices"][0]["finish_reason"]}
         print(json.dumps(summary, ensure_ascii=False), flush=True)
         return result["choices"][0]["message"], summary
@@ -92,6 +101,25 @@ def main():
         calls = msg.get("tool_calls") or []
         record["passed"] = len(calls) == 1 and calls[0]["function"]["name"] == "lookup_asset" and json.loads(calls[0]["function"]["arguments"]) == {"asset_id":"manga-007", "revision":3}
         records.append(record)
+    elif a.case in {"decode", "decode-heldout"}:
+        # Throughput fixture only: code is saved for inspection, never executed.
+        # All trials use the same workload and temperature; report every trial.
+        prompt = ("Python標準ライブラリだけで、容量制限付きLRUキャッシュを実装してください。"
+                  "OrderedDictを用い、get、put、delete、clear、__len__を用意し、容量0や不正な容量、"
+                  "既存キー更新の挙動を明示してください。その後unittestで8種類以上の境界条件を検査してください。"
+                  "まず設計を日本語で簡潔に説明し、その後に完全なコードを書いてください。")
+        if a.case == "decode-heldout":
+            prompt = ("Python標準ライブラリだけでJSON Lines形式のイベントログを一行ずつ読み、"
+                      "イベント種別ごとの件数と処理時間の平均値を集計するコマンドラインツールを書いてください。"
+                      "不正なJSON、空行、欠けた項目、負の処理時間は行番号付きで標準エラーへ報告し、"
+                      "残りの行を処理してください。全行をメモリに保持せず、大きなファイルでも動く設計にし、"
+                      "最後にunittestで正常系と境界条件を検査してください。日本語で設計を説明した後、完全なコードを書いてください。")
+        for trial in range(a.repeat):
+            msg, record = ask(f"decode-{trial+1}", prompt, max_tokens=a.output_tokens)
+            record.update(passed=record["usage"]["completion_tokens"] >= min(384, a.output_tokens),
+                          validation="throughput sample length only; generated code is not executed",
+                          text_chars=len(msg.get("content") or ""))
+            records.append(record)
     else:
         # Three needles with unrelated values among numbered distractors; NO_REUSE
         # in the launcher ensures these are actual fresh prompt tokens.

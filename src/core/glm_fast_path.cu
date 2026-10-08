@@ -17,6 +17,7 @@
 // resident experts are excluded, and every other layer's slots are untouched.
 #include "glm_fast_state.hpp"
 #include "strata/core/glm_model.hpp"
+#include "strata/core/glm_profile.hpp"
 #include "strata/kernels/glm_fast.hpp"
 #include "strata/kernels/iq_kernels.hpp"
 #include "strata/kernels/cpu/native_expert.hpp"
@@ -528,24 +529,20 @@ bool Glm5Model::fast_setup(std::string& err) {
         for (int il = l0_; il < lt_; ++il)
             if (F->L[(size_t) il].moe) nsl[(size_t) il] = per;
         if (getenv("STRATA_GLM_UNIFORM_SLOTS") == nullptr) {
-            std::vector<std::vector<double>> share((size_t) NL);
             std::ifstream cf(pack_dir_ + "/expert_counts.txt");
-            std::string line;
-            while (std::getline(cf, line)) {
-                std::istringstream ss(line);
-                int il = -1;
-                ss >> il;
-                if (il < l0_ || il >= lt_ || !F->L[(size_t) il].moe) continue;
-                std::vector<double> c;
-                double v = 0, tot_c = 0;
-                while (ss >> v) {
-                    c.push_back(v);
-                    tot_c += v;
+            auto share = strata::glmprofile::read_shares(cf, NL, g.n_expert, false);
+            // Opt-in: use the same saved usage that seeds warm-up order. A missing
+            // or malformed layer retains the offline counts (then mean fallback).
+            if (getenv("STRATA_GLM_USAGE_SLOTS") != nullptr) {
+                std::ifstream uf(usage_path());
+                auto local = strata::glmprofile::read_shares(uf, NL, g.n_expert, true);
+                int covered = 0;
+                for (int il = l0_; il < lt_; ++il) {
+                    if (!F->L[(size_t) il].moe || local[(size_t) il].empty()) continue;
+                    share[(size_t) il] = std::move(local[(size_t) il]);
+                    ++covered;
                 }
-                if (tot_c <= 0) continue;
-                std::sort(c.rbegin(), c.rend());
-                for (double& x : c) x /= tot_c;
-                share[(size_t) il] = std::move(c);
+                std::fprintf(stderr, "glm fast: CUDA%d slot allocation follows saved usage in %d layers\n", dev_, covered);
             }
             // a layer the counts do not cover (the NextN block) takes the mean profile of the others
             {
@@ -588,7 +585,9 @@ bool Glm5Model::fast_setup(std::string& err) {
                     for (int il = l0_; il < lt_; ++il) {
                         if (!F->L[(size_t) il].moe || nsl[(size_t) il] >= cap) continue;
                         if (used + slot_stride(il) > avail) continue;
-                        const double gv = gain(il);
+                        // Mixed quantizations have different byte costs. Keep
+                        // legacy count-only allocation for the default path.
+                        const double gv = gain(il) / (getenv("STRATA_GLM_USAGE_SLOTS") ? (double) slot_stride(il) : 1.0);
                         if (gv > bg) {
                             bg = gv;
                             best = il;
@@ -710,6 +709,8 @@ bool Glm5Model::fast_setup(std::string& err) {
                     double head_gb = 6.0;
                     if (const char* h = getenv("STRATA_GLM_RAM_HEADROOM_GB")) head_gb = std::atof(h);
                     total = std::max<int64_t>(0, avail_kb * 1024 - (int64_t) (head_gb * 1073741824.0));
+                    std::fprintf(stderr, "glm fast: RAM available %.2f GiB, headroom %.2f GiB, tier budget %.2f GiB\n",
+                                 (double) avail_kb / 1048576.0, head_gb, (double) total / 1073741824.0);
                 }
                 remaining = total;
                 remaining_layers = g.n_layers - g.dense_lead + (getenv("STRATA_GLM_NO_MTP") ? 0 : g.nextn);
@@ -730,6 +731,7 @@ bool Glm5Model::fast_setup(std::string& err) {
             // of one layer (the NextN block), which then never allocated and stopped the start ("did not allocate")
             const int64_t cap = std::max<int64_t>(1, (int64_t) (cls_weight[c] / (double) R.stride));
             n = std::min<int64_t>(n, cap);
+            const int64_t requested = n;
             const int64_t least = std::min<int64_t>(16, cap);   // the floor, or the whole cap when that is smaller
             void* p = nullptr;
             while (n >= least && cudaHostAlloc(&p, (size_t) n * R.stride, cudaHostAllocPortable) != cudaSuccess) {
@@ -741,6 +743,9 @@ bool Glm5Model::fast_setup(std::string& err) {
                 err = "glm fast: the pinned RAM tier did not allocate";
                 return false;
             }
+            if (n < requested)
+                std::fprintf(stderr, "glm fast: RAM class %zu reduced from %lld to %lld slots after allocation failure\n",
+                             c, (long long) requested, (long long) n);
             R.base = (uint8_t*) p;
             R.n = (int) n;
             R.key.assign((size_t) n, -1);
@@ -970,8 +975,13 @@ bool Glm5Model::fast_cpu_lane_setup(std::string& err) {
     F->cpu_hq.assign((size_t) 8 * kc::kNativeHBytes, 0);
     F->cpu_ff.assign((size_t) 8 * g.n_ff_exp, 0.0f);
     F->cpu_dn.assign((size_t) 8 * g.n_embd, 0.0f);
-    // the service thread is the pool's last worker; idle workers spin 20 ms (a decode's routes come ~1 ms apart)
-    F->cpu_pool.reset(new glmfast::Workers(threads - 1, 20000));
+    // The service thread is the pool's last worker. A long spin helps a fully
+    // RAM-resident run, but competes with disk workers when Q4 spills to SSD.
+    int spin_us = 20000;
+    if (const char* value = getenv("STRATA_GLM_CPU_SPIN_US"))
+        spin_us = std::clamp(std::atoi(value), 0, 20000);
+    F->cpu_pool.reset(new glmfast::Workers(threads - 1, spin_us));
+    std::fprintf(stderr, "glm fast: CUDA%d CPU worker spin %d us\n", dev_, spin_us);
     // ---- calibration, each lane alone: the CPU after 100 ms of the same work (an idle CPU's clocks take tens of ms to
     //      ramp up - a decode keeps them up), then the mean of 16 runs
     std::vector<float> x((size_t) g.n_embd), out((size_t) g.n_embd);

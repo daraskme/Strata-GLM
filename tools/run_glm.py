@@ -13,6 +13,7 @@ from pathlib import Path
 import resource
 import signal
 import socket
+import shutil
 import subprocess
 import sys
 import time
@@ -109,13 +110,20 @@ def main():
     p.add_argument("--pack", required=True, type=Path)
     p.add_argument("--context", type=int, choices=[32768, 65536, 131072, 262144], default=131072)
     p.add_argument("--port", type=int, default=1243)
+    p.add_argument("--model-name", default="glm-5.3-flash-orcarouter-q4-mangai", help="API model identity; use a distinct ID for each checkpoint")
     p.add_argument("--vram-cap-gib", type=float, default=90)
-    p.add_argument("--ram-headroom-gib", type=float, default=20)
+    p.add_argument("--ram-headroom-gib", type=float, default=12)
     p.add_argument("--min-ram-gib", type=float, default=94)
     p.add_argument("--min-vram-gib", type=float, default=80)
     p.add_argument("--cpu-lane", choices=["auto", "off"], default="auto")
-    p.add_argument("--prefill-mb", type=int, default=4096)
-    p.add_argument("--prefill-chunk", type=int, default=8192)
+    p.add_argument("--cpu-threads", type=int, help="explicit CPU lane threads for controlled comparisons")
+    p.add_argument("--cpu-spin-us", type=int, default=20000, help="CPU lane idle spin before sleeping (0..20000 microseconds)")
+    p.add_argument("--cpu-affinity", help="Linux CPU list for this GLM process only, e.g. 0-15 on this i9-12900KS")
+    p.add_argument("--uniform-expert-slots", action="store_true", help="disable profile-based layer slot allocation")
+    p.add_argument("--usage-expert-slots", action="store_true", help="allocate layer slots by saved usage per byte (experimental)")
+    p.add_argument("--usage-profile", type=Path, help="expert usage seed; benchmark runs copy it instead of modifying it")
+    p.add_argument("--prefill-mb", type=int, default=8192)
+    p.add_argument("--prefill-chunk", type=int, default=16384)
     p.add_argument("--prefill-min", type=int, default=256, help="use fast token path for shorter inputs on this CPU/PCIe profile")
     p.add_argument("--mangai-root", type=Path)
     p.add_argument("--resident-health", default="http://127.0.0.1:1240/health")
@@ -123,11 +131,39 @@ def main():
     p.add_argument("--prefer-max-performance", action="store_true", help="temporarily request NVIDIA maximum performance; restore on exit")
     p.add_argument("--run", action="store_true")
     a = p.parse_args()
+    if a.uniform_expert_slots and a.usage_expert_slots:
+        p.error("choose uniform or usage-based expert slots, not both")
+    if a.cpu_threads is not None and (not 1 <= a.cpu_threads <= 64 or a.cpu_lane == "off"):
+        p.error("CPU threads must be 1..64 and require the CPU lane")
+    if not 0 <= a.cpu_spin_us <= 20000:
+        p.error("CPU spin must be 0..20000 microseconds")
+    affinity = None
+    if a.cpu_affinity:
+        try:
+            affinity = set()
+            allowed_cpus = os.sched_getaffinity(0)
+            for item in a.cpu_affinity.split(","):
+                ends = list(map(int, item.split("-")))
+                if any(cpu < 0 or cpu > max(allowed_cpus) for cpu in ends):
+                    raise ValueError()
+                if len(ends) == 1:
+                    affinity.add(ends[0])
+                elif len(ends) == 2 and ends[0] <= ends[1]:
+                    affinity.update(range(ends[0], ends[1]+1))
+                else:
+                    raise ValueError()
+            if not affinity or not affinity <= allowed_cpus:
+                raise ValueError()
+        except (ValueError, AttributeError):
+            p.error("CPU affinity must be a nonempty subset of this process's allowed Linux CPUs")
     if a.ram_headroom_gib < 12 or a.vram_cap_gib <= 0:
         p.error("RAM headroom must be >=12 GiB and VRAM cap must be positive")
     if not 1024 <= a.prefill_mb <= 8192 or not 256 <= a.prefill_chunk <= 16384 or not 1 <= a.prefill_min <= a.prefill_chunk:
         p.error("prefill budget must be 1024..8192 MiB, chunk 256..16384 tokens")
     pack = a.pack.resolve()
+    usage_seed = (a.usage_profile or pack / "expert_usage.txt").resolve()
+    if a.usage_profile and not usage_seed.is_file():
+        p.error(f"missing usage seed {usage_seed}")
     exe = ROOT / "build/strata"
     for path in [exe, pack / "tokenizer/tokenizer.json", pack / "tokenizer/chat_template.jinja"]:
         if not path.is_file():
@@ -135,8 +171,13 @@ def main():
     info = resources()
     if a.vram_cap_gib > info["vram_total_gib"] - 4:
         p.error("VRAM cap must leave at least 4 GiB outside the cap")
-    plan = {"pack": str(pack), "context": a.context, "port": a.port, "resources": info,
+    plan = {"pack": str(pack), "model_name": a.model_name, "context": a.context, "port": a.port, "resources": info,
             "resident_ready": resident_ready(a.resident_health), "cpu_lane": a.cpu_lane,
+            "cpu_threads": a.cpu_threads, "cpu_spin_us": a.cpu_spin_us,
+            "cpu_affinity": sorted(affinity) if affinity else None,
+            "uniform_expert_slots": a.uniform_expert_slots,
+            "usage_expert_slots": a.usage_expert_slots,
+            "usage_seed": str(usage_seed),
             "vram_cap_gib": a.vram_cap_gib, "ram_headroom_gib": a.ram_headroom_gib,
             "prefill_mb": a.prefill_mb, "prefill_chunk": a.prefill_chunk, "prefill_min": a.prefill_min,
             "prefix_reuse": not a.benchmark, "prefer_max_performance": a.prefer_max_performance}
@@ -171,15 +212,29 @@ def main():
                STRATA_GLM_TIMING="1", STRATA_GLM_POOL_STATS="1",
                STRATA_GLM_PREFILL_MB=str(a.prefill_mb), STRATA_GLM_PREFILL_CHUNK=str(a.prefill_chunk),
                STRATA_GLM_PREFILL_MIN=str(a.prefill_min),
+               STRATA_GLM_CPU_SPIN_US=str(a.cpu_spin_us),
                STRATA_GLM_USAGE=str(pack / "expert_usage.txt"), OMP_NUM_THREADS="8")
     if a.cpu_lane == "off":
         env["STRATA_GLM_CPU_LANE"] = "0"
+    elif a.cpu_threads is not None:
+        env["STRATA_GLM_CPU_LANE"] = str(a.cpu_threads)
+    if a.uniform_expert_slots:
+        env["STRATA_GLM_UNIFORM_SLOTS"] = "1"
+    if a.usage_expert_slots:
+        env["STRATA_GLM_USAGE_SLOTS"] = "1"
     if a.benchmark:
         env["STRATA_GLM_NO_REUSE"] = "1"
     run_id = time.strftime("%Y%m%dT%H%M%S") + f"-{os.getpid()}"
+    usage_path = usage_seed
+    if a.benchmark:
+        usage_path = runtime / f"{run_id}-usage.txt"
+        if usage_seed.is_file():
+            shutil.copyfile(usage_seed, usage_path)
+    env["STRATA_GLM_USAGE"] = str(usage_path)
+    plan.update(usage_seed=str(usage_seed), usage_path=str(usage_path))
     config = {"exe": str(exe), "args": ["--glm-pack", str(pack), "--max-context", str(a.context)],
               "cwd": str(ROOT), "tokenizer": str(pack / "tokenizer"), "gpu": [0],
-              "model_name": "glm-5.3-flash-iq4-mangai", "host": "127.0.0.1",
+              "model_name": a.model_name, "host": "127.0.0.1",
               "log": str(runtime / f"{run_id}-engine.log"), "thinking_budget": 256}
     cfg_path = runtime / f"{run_id}.json"
     cfg_path.write_text(json.dumps(config, indent=2), encoding="utf-8")
@@ -203,8 +258,11 @@ def main():
         except OSError:
             pass
         print(f"GPU・RAM負荷開始。context={a.context}。ログ: {runtime / run_id}", flush=True)
-        child = subprocess.Popen([sys.executable, "-u", str(ROOT / "serve/server.py"), "--engine", "strata",
-                                  "--config", str(cfg_path), "--port", str(a.port)], env=env, start_new_session=True)
+        command = [sys.executable, "-u", str(ROOT / "serve/server.py"), "--engine", "strata",
+                   "--config", str(cfg_path), "--port", str(a.port)]
+        if affinity:
+            command = ["taskset", "--cpu-list", ",".join(map(str, sorted(affinity))), *command]
+        child = subprocess.Popen(command, env=env, start_new_session=True)
         health_failures = 0
         slow_link_samples = 0
         slow_link_reported = False

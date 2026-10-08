@@ -92,8 +92,8 @@ GLM5NEXT_NATIVE_OK = (
     "attn_q.weight", "attn_k.weight", "attn_v.weight",
     "ffn_gate.weight", "ffn_up.weight", "ffn_down.weight",
     "ffn_gate_shexp.weight", "ffn_up_shexp.weight", "ffn_down_shexp.weight",
-    # the UD-IQ1_S recipe stores even the embedding and the head at Q4_K; the pack loader
-    # dequantizes them into the F32 arena at load (2x ~1.2 GB quantized)
+    # Keep the embedding/head native: the CPU dequantizes one embedding row per
+    # input token; the GPU head uses the native quantized matvec.
     "token_embd.weight", "output.weight",
 )
 ARCHITECTURES = ("qwen4exp", "glm5-next", "glm5next")   # unsloth spells it without the hyphen

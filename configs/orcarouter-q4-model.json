@@ -1,0 +1,58 @@
+{
+  "repo": "orcarouter/GLM-5.3-Flash-Uncensored-GGUF",
+  "revision": "efa699effe7e3114ac89a87bab2ee9f56ccddba3",
+  "gated": "auto",
+  "files": [
+    {
+      "rfilename": "Q4_K_M/GLM-5.3-Flash-Uncensored-Q4_K_M-00001-of-00005.gguf",
+      "blobId": "eccd3b016533eadb48aeb9fc67179e91b1366f84",
+      "size": 44351173792,
+      "lfs": {
+        "sha256": "0d779937a886413881e4300fcce7a8679d0a9f370377e59df49e272010e155a8",
+        "size": 44351173792,
+        "pointerSize": 136
+      }
+    },
+    {
+      "rfilename": "Q4_K_M/GLM-5.3-Flash-Uncensored-Q4_K_M-00002-of-00005.gguf",
+      "blobId": "bb8a1d4f02c556abbd77f697e94a9e2ecf6ae150",
+      "size": 44268614560,
+      "lfs": {
+        "sha256": "06a8bc5e71d3a9f18fe0ed352c699c69e28c3071eb18b8c6647199c6cc570a22",
+        "size": 44268614560,
+        "pointerSize": 136
+      }
+    },
+    {
+      "rfilename": "Q4_K_M/GLM-5.3-Flash-Uncensored-Q4_K_M-00003-of-00005.gguf",
+      "blobId": "fb5794e9da85000a8acdefd817d63a6a669c1b10",
+      "size": 43647098080,
+      "lfs": {
+        "sha256": "19f8c1de3030f7c4e0a64f2f33398bea76ebe087f704d382d61e558b0f5e9be1",
+        "size": 43647098080,
+        "pointerSize": 136
+      }
+    },
+    {
+      "rfilename": "Q4_K_M/GLM-5.3-Flash-Uncensored-Q4_K_M-00004-of-00005.gguf",
+      "blobId": "5a4f625055ef5f9e90d0a1fd8e5bb9c711ab3ee0",
+      "size": 44919583648,
+      "lfs": {
+        "sha256": "32a69c41f43fa22f2f4db87854711f55d5682f7db57519d31945ea451d317ae8",
+        "size": 44919583648,
+        "pointerSize": 136
+      }
+    },
+    {
+      "rfilename": "Q4_K_M/GLM-5.3-Flash-Uncensored-Q4_K_M-00005-of-00005.gguf",
+      "blobId": "9dc7c0610158ef5fdafb64f8201613534b66bafb",
+      "size": 15788509792,
+      "lfs": {
+        "sha256": "4342a9d3c3ab26df6e0ef9d84ef4db2f48e57698fc8de9fd6d84621f3dc9f467",
+        "size": 15788509792,
+        "pointerSize": 136
+      }
+    }
+  ],
+  "quantization": "Q4_K_M"
+}

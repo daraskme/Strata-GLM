@@ -16,7 +16,11 @@ GLM-5.3-Flashを単一RTX PRO 6000 Blackwell 96GB・RAM 128GBで動かすprivate
   GLMのツール引数は閉じタグ到着時に一括送信。通常テキストはstreaming。
 - A1のhealth、GPU/RAM下限、所有プロセスの終了処理、任意のMang-AI共通GPUキュー。
 - Nixで有効にならなかったCPU命令セットを明示し、RAM側expertをAVX2/AVX-VNNIで計算。
-  prefillは4 GiBの作業領域、最大8,192 tokens/chunk。256 tokens未満は短文用経路を使う。
+  prefillは8 GiBの作業予算、最大16,384 tokens/chunk。256 tokens未満は短文用経路を使う。
+- OrcaRouter Q4_K_Mの取得・SHA256検証と、Q4_K gate/up → Q6_K downの数値検査を追加。
+- CPUワーカーの同期負荷を削減。CPU配置・使用頻度に応じたVRAM配分を比較できる。
+  [追加最適化と実測](docs/optimization-round2.md)、
+  [Devin CLI / Opus 5.5の提案](docs/opus55-optimization-consultation.md)を参照。
 
 ## ビルド
 
@@ -28,7 +32,7 @@ python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements-mangai.txt
 .venv/bin/python -c 'import setup; setup.get_llama_cpp()'
 cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DSTRATA_ENABLE_CUDA=ON -DCMAKE_CUDA_ARCHITECTURES=120 -DSTRATA_NATIVE_EXPERTS=ON -DSTRATA_BUILD_TESTS=OFF -DSTRATA_GGML_DIR="$PWD/third_party/llama.cpp" -DGGML_NATIVE=OFF -DGGML_AVX=ON -DGGML_AVX2=ON -DGGML_FMA=ON -DGGML_F16C=ON -DGGML_BMI2=ON -DGGML_AVX_VNNI=ON
-cmake --build build --target strata glm_moe_quant_parity --parallel 2
+cmake --build build --target strata glm_moe_quant_parity glm_workers_test glm_profile_test --parallel 2
 ```
 
 このPCでは各コマンドを`nix develop /etc/nixos#cuda -c`経由で実行する。
@@ -39,13 +43,16 @@ OS設定、A1用エンジン、既存Qwen用Strataは変更しない。
 
 ## モデルとpack
 
-対象は[Unsloth GLM-5.3-Flash-GGUF](https://huggingface.co/unsloth/GLM-5.3-Flash-GGUF)の
-`UD-IQ4_XS`、revision `a38483c8cd5df544f53d70fb281afe97369d5ab6`。
-5ファイル合計156,822,111,200 bytes。IQ4_XSという名前でもexpertはIQ3_S/IQ4_XS/Q6_Kの混合。
-本体のrouted expertsは約133.822 GiB。32-bitやBF16へ全展開しない。
+現在の対象は[OrcaRouter GLM-5.3-Flash-Uncensored-GGUF](https://huggingface.co/orcarouter/GLM-5.3-Flash-Uncensored-GGUF)の
+`Q4_K_M`、revision `efa699effe7e3114ac89a87bab2ee9f56ccddba3`。
+5ファイル合計192,974,979,872 bytes。本体のrouted expertsは約169.91 GiBで、
+Q4_KとQ6_Kの混合。32-bitやBF16へ全展開しない。
+SHA256付きの固定manifestは`configs/orcarouter-q4-model.json`。
+既存のHFアクセス権を使い、取得ツールは利用条件への同意操作を行わない。
 
 ```bash
-STRATA_GGUF_PY="$PWD/third_party/llama.cpp/gguf-py" .venv/bin/python tools/iq_pack.py --gguf /absolute/model/GLM-5.3-Flash-UD-IQ4_XS-00001-of-00005.gguf --out /absolute/model/pack-maya-iq4 --compat-bf16
+.venv/bin/python tools/fetch_glm.py --manifest configs/orcarouter-q4-model.json --out /absolute/model --env-file /absolute/secrets/models.env
+STRATA_GGUF_PY="$PWD/third_party/llama.cpp/gguf-py" .venv/bin/python tools/iq_pack.py --gguf /absolute/model/Q4_K_M/GLM-5.3-Flash-Uncensored-Q4_K_M-00001-of-00005.gguf --out /absolute/model/Q4_K_M/pack-maya-q4 --compat-bf16
 ```
 
 packはGGUFと同じディレクトリ直下に置く。`--experts-bin`は指定しない。
@@ -54,16 +61,23 @@ packはGGUFと同じディレクトリ直下に置く。`--experts-bin`は指定
 ## 起動
 
 ```bash
-.venv/bin/python tools/run_glm.py --pack /absolute/model/pack-maya-iq4
-.venv/bin/python tools/run_glm.py --pack /absolute/model/pack-maya-iq4 --mangai-root /mnt/solidigm-b/Mang-AI --run
+.venv/bin/python tools/run_glm.py --pack /absolute/model/Q4_K_M/pack-maya-q4
+.venv/bin/python tools/run_glm.py --pack /absolute/model/Q4_K_M/pack-maya-q4 --mangai-root /mnt/solidigm-b/Mang-AI --cpu-threads 8 --cpu-spin-us 1000 --cpu-affinity 0-15 --uniform-expert-slots --run
 ```
 
 `--run`なしは検査だけ。APIは`http://127.0.0.1:1243/v1`。
 起動には空きRAM94 GiB・VRAM80 GiBとA1の正常応答が必要。VMは利用者自身が停止する。
 既定contextは131,072で、実入力の品質検証結果は下記と区別する。
-GPU全体の使用上限目標90 GiBからさらに2 GiBを予約、RAMは空き容量から20 GiBを残してexpertへ使用。
+GPU全体の使用上限目標90 GiBからさらに2 GiBを予約、RAMは空き容量から12 GiBを残してexpertへ使用。
 MTPは単一GPUの実行経路がないため無効。CPU laneは起動時のCPU/PCIe校正に任せる。
 `--cpu-lane off`で比較可能。CPU 8 P-core/8 E-coreに固定の万能スレッド数は仮定しない。
+APIのmodel IDは`glm-5.3-flash-orcarouter-q4-mangai`。
+別のcheckpointを比較する場合は`--model-name`で識別名も明示する。
+上のCPU指定はこのPCのi9-12900KS向けで、`0-15`がPコアのlogical CPU。
+別のCPUではaffinityを確認するか省略する。省略時は物理コア数に応じたauto設定。
+packの`expert_usage.txt`でGPUへ置くexpertを優先する。このPCにはコード課題由来のseedを配置済み。
+通常運用では使用履歴を更新し、次回の起動へ反映する。新規packでは初回は履歴なしで起動する。
+`--benchmark`は履歴を実行ごとのコピーへ書き、元を保持する。
 
 Ctrl+Cでこの起動が所有するAPIとengineを終了し、GPUキューを解放する。
 空きRAM8 GiB未満、VRAM1 GiB未満、A1 healthの連続失敗でも同じ終了処理をする。
@@ -74,11 +88,22 @@ Ctrl+Cでこの起動が所有するAPIとengineを終了し、GPUキューを�
 ```bash
 .venv/bin/python -m unittest discover -s tests -p test_glm_frontend.py -v
 build/glm_moe_quant_parity
+build/glm_workers_test
+build/glm_profile_test
 # 上のrun_glm.pyを --benchmark --run 付きで起動してから実行する
-.venv/bin/python tools/bench_glm.py --pack /absolute/model/pack-maya-iq4 --case smoke
-.venv/bin/python tools/bench_glm.py --pack /absolute/model/pack-maya-iq4 --case needle --tokens 32000
-.venv/bin/python tools/bench_glm.py --pack /absolute/model/pack-maya-iq4 --case needle --tokens 128000
+.venv/bin/python tools/bench_glm.py --pack /absolute/model/Q4_K_M/pack-maya-q4 --case smoke
+.venv/bin/python tools/bench_glm.py --pack /absolute/model/Q4_K_M/pack-maya-q4 --case decode --repeat 3 --output-tokens 768
+.venv/bin/python tools/bench_glm.py --pack /absolute/model/Q4_K_M/pack-maya-q4 --case needle --tokens 128000
 ```
+
+OrcaRouter版の検査・実機測定は[追加最適化記録](docs/optimization-round2.md)を正本とする。
+
+## 旧Unsloth UD-IQ4_XSでの初回検証
+
+以下は旧checkpointの履歴であり、OrcaRouter Q4_K_Mの性能値ではない。
+旧モデルは[Unsloth GLM-5.3-Flash-GGUF](https://huggingface.co/unsloth/GLM-5.3-Flash-GGUF)の
+`UD-IQ4_XS`、revision `a38483c8cd5df544f53d70fb281afe97369d5ab6`。
+expertはIQ3_S/IQ4_XS/Q6_K混合、約133.822 GiB。
 
 2026-10-08: CUDA13/GCC15/sm120でビルド成功。APIの4回帰テスト合格。
 GPU数値比較8ケース（Q4_K/Q5_K/Q6_K各1・8expert、IQ3_S→Q6_K、IQ3_S→IQ4_XS）合格。

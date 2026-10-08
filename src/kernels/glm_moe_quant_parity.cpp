@@ -124,6 +124,8 @@ int main() {
     // Real Unsloth UD-IQ4_XS pattern: IQ3_S gate/up with Q6_K down.
     run(21, 14, 8);
     run(21, 23, 8);
+    // OrcaRouter Q4_K_M mixes Q4_K gate/up with Q6_K down.
+    run(12, 14, 8);
     require(!gf::moe_supported(999), "unknown format rejected");
     const int before = gf::launch_errors();
     gf::MoeDev empty;

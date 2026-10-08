@@ -685,6 +685,14 @@ endif()
 find_package(Threads REQUIRED)
 target_link_libraries(strata_kernels_cpu PUBLIC Threads::Threads)
 
+add_executable(glm_workers_test EXCLUDE_FROM_ALL tests/glm_workers_test.cpp)
+target_include_directories(glm_workers_test PRIVATE include)
+target_link_libraries(glm_workers_test PRIVATE Threads::Threads)
+target_compile_options(glm_workers_test PRIVATE $<$<CXX_COMPILER_ID:GNU,Clang>:-UNDEBUG>)
+add_executable(glm_profile_test EXCLUDE_FROM_ALL tests/glm_profile_test.cpp)
+target_include_directories(glm_profile_test PRIVATE include)
+target_compile_options(glm_profile_test PRIVATE $<$<CXX_COMPILER_ID:GNU,Clang>:-UNDEBUG>)
+
 # ---- plan v0.3 P6: the i-quant models' CPU experts (IQ2_XS / IQ3_XXS files) ----
 #
 # The CPU computes a native expert with ggml-cpu's own dot products (`ggml_get_type_traits_cpu`), so an IQ

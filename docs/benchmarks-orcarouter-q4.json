@@ -1,0 +1,883 @@
+{
+  "model": {
+    "repo": "orcarouter/GLM-5.3-Flash-Uncensored-GGUF",
+    "revision": "efa699effe7e3114ac89a87bab2ee9f56ccddba3",
+    "quantization": "Q4_K_M"
+  },
+  "date": "2026-10-08",
+  "hardware": {
+    "cpu": "i9-12900KS",
+    "ram_gib": 125,
+    "gpu": "RTX PRO 6000 Blackwell",
+    "vram_gib": 95.5927734375,
+    "pcie_under_load": "Gen1 x16"
+  },
+  "scope": "Local measurements with A1 resident; decode cases validate sample length only, not generated program correctness. Placement history differs between cold and warm runs. All trials are included.",
+  "runs": [
+    {
+      "id": "20261008T135603-3320323",
+      "configuration": {
+        "context": 131072,
+        "cpu_lane": "auto",
+        "cpu_threads": null,
+        "cpu_spin_us": 20000,
+        "cpu_affinity": null,
+        "uniform_expert_slots": true,
+        "usage_expert_slots": false,
+        "vram_cap_gib": 90,
+        "ram_headroom_gib": 12,
+        "prefill_mb": 4096,
+        "prefill_chunk": 8192,
+        "prefill_min": 256,
+        "prefix_reuse": false
+      },
+      "monitoring": {
+        "samples": 91,
+        "a1_health_failures": 0,
+        "min_ram_available_gib": 10.616531372070312,
+        "min_vram_free_gib": 6.9609375
+      },
+      "benchmarks": [
+        {
+          "id": "20261008T135803-smoke",
+          "records": [
+            {
+              "case": "japanese",
+              "model": "glm-5.3-flash-orcarouter-q4-mangai",
+              "prompt_tokens": 37,
+              "usage": {
+                "prompt_tokens": 37,
+                "completion_tokens": 10,
+                "total_tokens": 47,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 37,
+                "prompt_ms": 7601.5,
+                "prompt_per_token_ms": 205.446,
+                "prompt_per_second": 4.9,
+                "predicted_n": 10,
+                "predicted_ms": 1388.6,
+                "predicted_per_token_ms": 138.86,
+                "predicted_per_second": 7.2,
+                "draft_n": 0,
+                "draft_n_accepted": 0
+              },
+              "elapsed_s": 9.094753737968858,
+              "finish_reason": "stop",
+              "passed": true
+            },
+            {
+              "case": "code",
+              "model": "glm-5.3-flash-orcarouter-q4-mangai",
+              "prompt_tokens": 73,
+              "usage": {
+                "prompt_tokens": 73,
+                "completion_tokens": 29,
+                "total_tokens": 102,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 73,
+                "prompt_ms": 10992.3,
+                "prompt_per_token_ms": 150.579,
+                "prompt_per_second": 6.6,
+                "predicted_n": 29,
+                "predicted_ms": 4715.6,
+                "predicted_per_token_ms": 162.607,
+                "predicted_per_second": 6.1,
+                "draft_n": 0,
+                "draft_n_accepted": 0
+              },
+              "elapsed_s": 15.710087646963075,
+              "finish_reason": "stop",
+              "passed": true
+            },
+            {
+              "case": "tool",
+              "model": "glm-5.3-flash-orcarouter-q4-mangai",
+              "prompt_tokens": 197,
+              "usage": {
+                "prompt_tokens": 197,
+                "completion_tokens": 21,
+                "total_tokens": 218,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 197,
+                "prompt_ms": 29702.3,
+                "prompt_per_token_ms": 150.773,
+                "prompt_per_second": 6.6,
+                "predicted_n": 21,
+                "predicted_ms": 2483.4,
+                "predicted_per_token_ms": 118.257,
+                "predicted_per_second": 8.5,
+                "draft_n": 0,
+                "draft_n_accepted": 0
+              },
+              "elapsed_s": 32.18919506599195,
+              "finish_reason": "tool_calls",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "id": "20261008T135912-decode",
+          "records": [
+            {
+              "case": "decode-1",
+              "model": "glm-5.3-flash-orcarouter-q4-mangai",
+              "prompt_tokens": 117,
+              "usage": {
+                "prompt_tokens": 117,
+                "completion_tokens": 768,
+                "total_tokens": 885,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 117,
+                "prompt_ms": 13696.7,
+                "prompt_per_token_ms": 117.066,
+                "prompt_per_second": 8.5,
+                "predicted_n": 768,
+                "predicted_ms": 88131.8,
+                "predicted_per_token_ms": 114.755,
+                "predicted_per_second": 8.7,
+                "draft_n": 0,
+                "draft_n_accepted": 0
+              },
+              "elapsed_s": 101.83330140897306,
+              "finish_reason": "length",
+              "passed": true,
+              "validation": "throughput sample length only; generated code is not executed",
+              "text_chars": 2461
+            },
+            {
+              "case": "decode-2",
+              "model": "glm-5.3-flash-orcarouter-q4-mangai",
+              "prompt_tokens": 117,
+              "usage": {
+                "prompt_tokens": 117,
+                "completion_tokens": 768,
+                "total_tokens": 885,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 117,
+                "prompt_ms": 12154.7,
+                "prompt_per_token_ms": 103.886,
+                "prompt_per_second": 9.6,
+                "predicted_n": 768,
+                "predicted_ms": 79534.2,
+                "predicted_per_token_ms": 103.56,
+                "predicted_per_second": 9.7,
+                "draft_n": 0,
+                "draft_n_accepted": 0
+              },
+              "elapsed_s": 91.69568225700641,
+              "finish_reason": "length",
+              "passed": true,
+              "validation": "throughput sample length only; generated code is not executed",
+              "text_chars": 2099
+            },
+            {
+              "case": "decode-3",
+              "model": "glm-5.3-flash-orcarouter-q4-mangai",
+              "prompt_tokens": 117,
+              "usage": {
+                "prompt_tokens": 117,
+                "completion_tokens": 768,
+                "total_tokens": 885,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 117,
+                "prompt_ms": 11594.4,
+                "prompt_per_token_ms": 99.097,
+                "prompt_per_second": 10.1,
+                "predicted_n": 768,
+                "predicted_ms": 77738.9,
+                "predicted_per_token_ms": 101.223,
+                "predicted_per_second": 9.9,
+                "draft_n": 0,
+                "draft_n_accepted": 0
+              },
+              "elapsed_s": 89.33773467800347,
+              "finish_reason": "length",
+              "passed": true,
+              "validation": "throughput sample length only; generated code is not executed",
+              "text_chars": 2358
+            }
+          ]
+        },
+        {
+          "id": "20261008T140605-needle",
+          "records": [
+            {
+              "case": "needle-32000",
+              "model": "glm-5.3-flash-orcarouter-q4-mangai",
+              "prompt_tokens": 31989,
+              "usage": {
+                "prompt_tokens": 31989,
+                "completion_tokens": 37,
+                "total_tokens": 32026,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 31989,
+                "prompt_ms": 217343.6,
+                "prompt_per_token_ms": 6.794,
+                "prompt_per_second": 147.2,
+                "predicted_n": 37,
+                "predicted_ms": 4635.2,
+                "predicted_per_token_ms": 125.276,
+                "predicted_per_second": 8,
+                "draft_n": 0,
+                "draft_n_accepted": 0
+              },
+              "elapsed_s": 222.1716473120032,
+              "finish_reason": "stop",
+              "passed": true,
+              "expected": {
+                "早朝": "R7K2-5941",
+                "正午": "P3X8-2167",
+                "夕方": "W9C4-8032"
+              },
+              "answer": {
+                "早朝": "R7K2-5941",
+                "正午": "P3X8-2167",
+                "夕方": "W9C4-8032"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "20261008T141137-3328085",
+      "configuration": {
+        "context": 131072,
+        "cpu_lane": "auto",
+        "cpu_threads": null,
+        "cpu_spin_us": 20000,
+        "cpu_affinity": null,
+        "uniform_expert_slots": true,
+        "usage_expert_slots": false,
+        "vram_cap_gib": 90,
+        "ram_headroom_gib": 12,
+        "prefill_mb": 8192,
+        "prefill_chunk": 16384,
+        "prefill_min": 256,
+        "prefix_reuse": false
+      },
+      "monitoring": {
+        "samples": 38,
+        "a1_health_failures": 0,
+        "min_ram_available_gib": 9.161628723144531,
+        "min_vram_free_gib": 6.58203125
+      },
+      "benchmarks": [
+        {
+          "id": "20261008T141334-decode",
+          "records": [
+            {
+              "case": "decode-1",
+              "model": "glm-5.3-flash-orcarouter-q4-mangai",
+              "prompt_tokens": 117,
+              "usage": {
+                "prompt_tokens": 117,
+                "completion_tokens": 768,
+                "total_tokens": 885,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 117,
+                "prompt_ms": 6117.8,
+                "prompt_per_token_ms": 52.289,
+                "prompt_per_second": 19.1,
+                "predicted_n": 768,
+                "predicted_ms": 41161.6,
+                "predicted_per_token_ms": 53.596,
+                "predicted_per_second": 18.7,
+                "draft_n": 0,
+                "draft_n_accepted": 0
+              },
+              "elapsed_s": 47.395995363011025,
+              "finish_reason": "length",
+              "passed": true,
+              "validation": "throughput sample length only; generated code is not executed",
+              "text_chars": 2037
+            },
+            {
+              "case": "decode-2",
+              "model": "glm-5.3-flash-orcarouter-q4-mangai",
+              "prompt_tokens": 117,
+              "usage": {
+                "prompt_tokens": 117,
+                "completion_tokens": 768,
+                "total_tokens": 885,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 117,
+                "prompt_ms": 5098.5,
+                "prompt_per_token_ms": 43.577,
+                "prompt_per_second": 22.9,
+                "predicted_n": 768,
+                "predicted_ms": 31269.6,
+                "predicted_per_token_ms": 40.716,
+                "predicted_per_second": 24.6,
+                "draft_n": 0,
+                "draft_n_accepted": 0
+              },
+              "elapsed_s": 36.38008921704022,
+              "finish_reason": "length",
+              "passed": true,
+              "validation": "throughput sample length only; generated code is not executed",
+              "text_chars": 2276
+            }
+          ]
+        },
+        {
+          "id": "20261008T141515-needle",
+          "records": [
+            {
+              "case": "needle-32000",
+              "model": "glm-5.3-flash-orcarouter-q4-mangai",
+              "prompt_tokens": 31989,
+              "usage": {
+                "prompt_tokens": 31989,
+                "completion_tokens": 42,
+                "total_tokens": 32031,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 31989,
+                "prompt_ms": 130256.6,
+                "prompt_per_token_ms": 4.072,
+                "prompt_per_second": 245.6,
+                "predicted_n": 42,
+                "predicted_ms": 4867.9,
+                "predicted_per_token_ms": 115.902,
+                "predicted_per_second": 8.6,
+                "draft_n": 0,
+                "draft_n_accepted": 0
+              },
+              "elapsed_s": 135.30152662401088,
+              "finish_reason": "stop",
+              "passed": true,
+              "expected": {
+                "早朝": "R7K2-5941",
+                "正午": "P3X8-2167",
+                "夕方": "W9C4-8032"
+              },
+              "answer": {
+                "早朝": "R7K2-5941",
+                "正午": "P3X8-2167",
+                "夕方": "W9C4-8032"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "20261008T141806-3331057",
+      "configuration": {
+        "context": 131072,
+        "cpu_lane": "auto",
+        "cpu_threads": 12,
+        "cpu_spin_us": 1000,
+        "cpu_affinity": null,
+        "uniform_expert_slots": true,
+        "usage_expert_slots": false,
+        "vram_cap_gib": 90,
+        "ram_headroom_gib": 12,
+        "prefill_mb": 8192,
+        "prefill_chunk": 16384,
+        "prefill_min": 256,
+        "prefix_reuse": false
+      },
+      "monitoring": {
+        "samples": 27,
+        "a1_health_failures": 0,
+        "min_ram_available_gib": 10.391582489013672,
+        "min_vram_free_gib": 6.5068359375
+      },
+      "benchmarks": [
+        {
+          "id": "20261008T142006-decode",
+          "records": [
+            {
+              "case": "decode-1",
+              "model": "glm-5.3-flash-orcarouter-q4-mangai",
+              "prompt_tokens": 117,
+              "usage": {
+                "prompt_tokens": 117,
+                "completion_tokens": 768,
+                "total_tokens": 885,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 117,
+                "prompt_ms": 5432.9,
+                "prompt_per_token_ms": 46.435,
+                "prompt_per_second": 21.5,
+                "predicted_n": 768,
+                "predicted_ms": 38633.5,
+                "predicted_per_token_ms": 50.304,
+                "predicted_per_second": 19.9,
+                "draft_n": 0,
+                "draft_n_accepted": 0
+              },
+              "elapsed_s": 44.18451648205519,
+              "finish_reason": "length",
+              "passed": true,
+              "validation": "throughput sample length only; generated code is not executed",
+              "text_chars": 2361
+            },
+            {
+              "case": "decode-2",
+              "model": "glm-5.3-flash-orcarouter-q4-mangai",
+              "prompt_tokens": 117,
+              "usage": {
+                "prompt_tokens": 117,
+                "completion_tokens": 768,
+                "total_tokens": 885,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 117,
+                "prompt_ms": 5112.6,
+                "prompt_per_token_ms": 43.697,
+                "prompt_per_second": 22.9,
+                "predicted_n": 768,
+                "predicted_ms": 35208.1,
+                "predicted_per_token_ms": 45.844,
+                "predicted_per_second": 21.8,
+                "draft_n": 0,
+                "draft_n_accepted": 0
+              },
+              "elapsed_s": 40.32443740504095,
+              "finish_reason": "length",
+              "passed": true,
+              "validation": "throughput sample length only; generated code is not executed",
+              "text_chars": 2327
+            },
+            {
+              "case": "decode-3",
+              "model": "glm-5.3-flash-orcarouter-q4-mangai",
+              "prompt_tokens": 117,
+              "usage": {
+                "prompt_tokens": 117,
+                "completion_tokens": 768,
+                "total_tokens": 885,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 117,
+                "prompt_ms": 5101.6,
+                "prompt_per_token_ms": 43.603,
+                "prompt_per_second": 22.9,
+                "predicted_n": 768,
+                "predicted_ms": 31410.1,
+                "predicted_per_token_ms": 40.899,
+                "predicted_per_second": 24.5,
+                "draft_n": 0,
+                "draft_n_accepted": 0
+              },
+              "elapsed_s": 36.51440026104683,
+              "finish_reason": "length",
+              "passed": true,
+              "validation": "throughput sample length only; generated code is not executed",
+              "text_chars": 2391
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "20261008T142303-3333319",
+      "configuration": {
+        "context": 131072,
+        "cpu_lane": "auto",
+        "cpu_threads": 8,
+        "cpu_spin_us": 1000,
+        "cpu_affinity": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "uniform_expert_slots": true,
+        "usage_expert_slots": false,
+        "vram_cap_gib": 90,
+        "ram_headroom_gib": 12,
+        "prefill_mb": 8192,
+        "prefill_chunk": 16384,
+        "prefill_min": 256,
+        "prefix_reuse": false
+      },
+      "monitoring": {
+        "samples": 112,
+        "a1_health_failures": 0,
+        "min_ram_available_gib": 8.97879409790039,
+        "min_vram_free_gib": 6.646484375
+      },
+      "benchmarks": [
+        {
+          "id": "20261008T142509-decode",
+          "records": [
+            {
+              "case": "decode-1",
+              "model": "glm-5.3-flash-orcarouter-q4-mangai",
+              "prompt_tokens": 117,
+              "usage": {
+                "prompt_tokens": 117,
+                "completion_tokens": 768,
+                "total_tokens": 885,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 117,
+                "prompt_ms": 5900.8,
+                "prompt_per_token_ms": 50.434,
+                "prompt_per_second": 19.8,
+                "predicted_n": 768,
+                "predicted_ms": 38553.8,
+                "predicted_per_token_ms": 50.2,
+                "predicted_per_second": 19.9,
+                "draft_n": 0,
+                "draft_n_accepted": 0
+              },
+              "elapsed_s": 44.5683674159809,
+              "finish_reason": "length",
+              "passed": true,
+              "validation": "throughput sample length only; generated code is not executed",
+              "text_chars": 2268
+            },
+            {
+              "case": "decode-2",
+              "model": "glm-5.3-flash-orcarouter-q4-mangai",
+              "prompt_tokens": 117,
+              "usage": {
+                "prompt_tokens": 117,
+                "completion_tokens": 768,
+                "total_tokens": 885,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 117,
+                "prompt_ms": 5426.2,
+                "prompt_per_token_ms": 46.378,
+                "prompt_per_second": 21.6,
+                "predicted_n": 768,
+                "predicted_ms": 33657.6,
+                "predicted_per_token_ms": 43.825,
+                "predicted_per_second": 22.8,
+                "draft_n": 0,
+                "draft_n_accepted": 0
+              },
+              "elapsed_s": 39.086362093978096,
+              "finish_reason": "length",
+              "passed": true,
+              "validation": "throughput sample length only; generated code is not executed",
+              "text_chars": 2385
+            },
+            {
+              "case": "decode-3",
+              "model": "glm-5.3-flash-orcarouter-q4-mangai",
+              "prompt_tokens": 117,
+              "usage": {
+                "prompt_tokens": 117,
+                "completion_tokens": 768,
+                "total_tokens": 885,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 117,
+                "prompt_ms": 5420.3,
+                "prompt_per_token_ms": 46.327,
+                "prompt_per_second": 21.6,
+                "predicted_n": 768,
+                "predicted_ms": 31589,
+                "predicted_per_token_ms": 41.132,
+                "predicted_per_second": 24.3,
+                "draft_n": 0,
+                "draft_n_accepted": 0
+              },
+              "elapsed_s": 37.01208846602822,
+              "finish_reason": "length",
+              "passed": true,
+              "validation": "throughput sample length only; generated code is not executed",
+              "text_chars": 2248
+            }
+          ]
+        },
+        {
+          "id": "20261008T142801-decode-heldout",
+          "records": [
+            {
+              "case": "decode-1",
+              "model": "glm-5.3-flash-orcarouter-q4-mangai",
+              "prompt_tokens": 157,
+              "usage": {
+                "prompt_tokens": 157,
+                "completion_tokens": 768,
+                "total_tokens": 925,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 157,
+                "prompt_ms": 9647.8,
+                "prompt_per_token_ms": 61.451,
+                "prompt_per_second": 16.3,
+                "predicted_n": 768,
+                "predicted_ms": 42698.5,
+                "predicted_per_token_ms": 55.597,
+                "predicted_per_second": 18,
+                "draft_n": 0,
+                "draft_n_accepted": 0
+              },
+              "elapsed_s": 52.45792536099907,
+              "finish_reason": "length",
+              "passed": true,
+              "validation": "throughput sample length only; generated code is not executed",
+              "text_chars": 1966
+            },
+            {
+              "case": "decode-2",
+              "model": "glm-5.3-flash-orcarouter-q4-mangai",
+              "prompt_tokens": 157,
+              "usage": {
+                "prompt_tokens": 157,
+                "completion_tokens": 768,
+                "total_tokens": 925,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 157,
+                "prompt_ms": 8185.9,
+                "prompt_per_token_ms": 52.139,
+                "prompt_per_second": 19.2,
+                "predicted_n": 768,
+                "predicted_ms": 41222.4,
+                "predicted_per_token_ms": 53.675,
+                "predicted_per_second": 18.6,
+                "draft_n": 0,
+                "draft_n_accepted": 0
+              },
+              "elapsed_s": 49.41220110398717,
+              "finish_reason": "length",
+              "passed": true,
+              "validation": "throughput sample length only; generated code is not executed",
+              "text_chars": 1865
+            }
+          ]
+        },
+        {
+          "id": "20261008T143039-needle",
+          "records": [
+            {
+              "case": "needle-128000",
+              "model": "glm-5.3-flash-orcarouter-q4-mangai",
+              "prompt_tokens": 127990,
+              "usage": {
+                "prompt_tokens": 127990,
+                "completion_tokens": 42,
+                "total_tokens": 128032,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 127990,
+                "prompt_ms": 553375.3,
+                "prompt_per_token_ms": 4.324,
+                "prompt_per_second": 231.3,
+                "predicted_n": 42,
+                "predicted_ms": 4929.6,
+                "predicted_per_token_ms": 117.371,
+                "predicted_per_second": 8.5,
+                "draft_n": 0,
+                "draft_n_accepted": 0
+              },
+              "elapsed_s": 558.654340322013,
+              "finish_reason": "stop",
+              "passed": true,
+              "expected": {
+                "早朝": "R7K2-5941",
+                "正午": "P3X8-2167",
+                "夕方": "W9C4-8032"
+              },
+              "answer": {
+                "早朝": "R7K2-5941",
+                "正午": "P3X8-2167",
+                "夕方": "W9C4-8032"
+              }
+            }
+          ]
+        },
+        {
+          "id": "20261008T144045-smoke",
+          "records": [
+            {
+              "case": "japanese",
+              "model": "glm-5.3-flash-orcarouter-q4-mangai",
+              "prompt_tokens": 37,
+              "usage": {
+                "prompt_tokens": 37,
+                "completion_tokens": 10,
+                "total_tokens": 47,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 37,
+                "prompt_ms": 3262.6,
+                "prompt_per_token_ms": 88.178,
+                "prompt_per_second": 11.3,
+                "predicted_n": 10,
+                "predicted_ms": 670.8,
+                "predicted_per_token_ms": 67.08,
+                "predicted_per_second": 14.9,
+                "draft_n": 0,
+                "draft_n_accepted": 0
+              },
+              "elapsed_s": 4.044883049966302,
+              "finish_reason": "stop",
+              "passed": true
+            },
+            {
+              "case": "code",
+              "model": "glm-5.3-flash-orcarouter-q4-mangai",
+              "prompt_tokens": 73,
+              "usage": {
+                "prompt_tokens": 73,
+                "completion_tokens": 29,
+                "total_tokens": 102,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 73,
+                "prompt_ms": 4566.5,
+                "prompt_per_token_ms": 62.555,
+                "prompt_per_second": 16,
+                "predicted_n": 29,
+                "predicted_ms": 1888.5,
+                "predicted_per_token_ms": 65.121,
+                "predicted_per_second": 15.4,
+                "draft_n": 0,
+                "draft_n_accepted": 0
+              },
+              "elapsed_s": 6.457077722006943,
+              "finish_reason": "stop",
+              "passed": true
+            },
+            {
+              "case": "tool",
+              "model": "glm-5.3-flash-orcarouter-q4-mangai",
+              "prompt_tokens": 197,
+              "usage": {
+                "prompt_tokens": 197,
+                "completion_tokens": 21,
+                "total_tokens": 218,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 197,
+                "prompt_ms": 17572.1,
+                "prompt_per_token_ms": 89.198,
+                "prompt_per_second": 11.2,
+                "predicted_n": 21,
+                "predicted_ms": 1595.1,
+                "predicted_per_token_ms": 75.957,
+                "predicted_per_second": 13.2,
+                "draft_n": 0,
+                "draft_n_accepted": 0
+              },
+              "elapsed_s": 19.16917329299031,
+              "finish_reason": "tool_calls",
+              "passed": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
